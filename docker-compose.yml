@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+
+  php-apache:
+    build: 
+      dockerfile: ./php/Dockerfile
+    container_name: easyschedule-php-apache
+    ports:
+      - 5000:80
+    volumes:
+      - ./app:/var/www/html/app
+      - ./core:/var/www/html/core
+      - ./index.php:/var/www/html/index.php
+      - ./.htaccess:/var/www/html/.htaccess
+    depends_on:
+      - db
+
+  db:
+    build: ./sql/mysql
+    container_name: easyschedule-mysql-db
+    command: [
+      '--default-authentication-plugin=mysql_native_password', 
+      '--character-set-server=utf8', 
+      '--collation-server=utf8_general_ci'
+    ]
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: easyschedule-phpmyadmin
+    ports:
+      - 5001:80
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+
+volumes:
+  mysqldata:

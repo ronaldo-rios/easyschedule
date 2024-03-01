@@ -1,0 +1,12 @@
+# Doc: https://httpd.apache.org/docs/2.4/rewrite/flags.html
+
+# Activate the rewrite engine
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+# Example: 
+# http://localhost:5000/users/index
+# http://localhost:5000/users/index?id=1&role=admin
