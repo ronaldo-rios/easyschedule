@@ -10,6 +10,8 @@ class LoadPage
     private static string $urlMethod;
     private static string $urlParameter;
     private static string $classLoad;
+    private static array $listPublicPage;
+    private static array $listPrivatePage;
 
     /**
      * This method is responsible for loading and redirecting the user to the requested page or to the default page:
@@ -24,7 +26,7 @@ class LoadPage
         self::$urlMethod = $urlMethod;
         self::$urlParameter = $urlParameter;
 
-        self::$classLoad = "\\App\\adms\\Controllers\\" . self::$urlController;
+        self::publicPage();
 
         if(class_exists(self::$classLoad)) {
             self::loadMethod();
@@ -53,6 +55,62 @@ class LoadPage
             self::$urlMethod = SlugControllerOrMethod::slugMethod(METHOD);
             self::$urlParameter = "";
             self::load(self::$urlController, self::$urlMethod, self::$urlParameter);
+        }
+    }
+
+    /**
+     * Check if the requested page is public else check if the user is logged in:
+     * @return void
+     */
+    private static function publicPage(): void
+    {
+        // List of public pages:
+        self::$listPublicPage = ["Login", "Error", "Logout", "NewUser"];
+
+        in_array(self::$urlController, self::$listPublicPage)
+            ? self::$classLoad = "\\App\\adms\\Controllers\\" . self::$urlController
+            : self::privatePage();
+    }
+
+    /**
+     * Check if the user is logged in else redirect to the error page:
+     * @return void
+     */
+    private static function privatePage(): void
+    {
+        // List of private pages:
+        self::$listPrivatePage = ["Dashboard", "Users"];
+
+        if(in_array(self::$urlController, self::$listPrivatePage)) {
+            self::verifyLoged();
+        }
+        else {
+            // $_SESSION['msg'] = "<div class='alert alert-danger'>Página não encontrada!</div>";
+            // tratar esse 404 futuramente
+            $url = URL . "error/index";
+            header("Location: $url");
+            exit;
+        }
+    }
+
+    /**
+     * Check if the user is logged in:
+     * @return void
+     */
+    private static function verifyLoged(): void
+    {
+        if (
+            isset($_SESSION['user_id']) &&
+            isset($_SESSION['user_name']) && 
+            isset($_SESSION['user_email'])
+        ) {
+            self::$classLoad = "\\App\\adms\\Controllers\\" . self::$urlController;
+        }
+        else {
+            $_SESSION['msg'] = "<div class='alert alert-danger'>Faça login para acessar.</div>";
+            $url = URL . "login/index";
+            header("Location: $url");
+            exit;
         }
     }
 }

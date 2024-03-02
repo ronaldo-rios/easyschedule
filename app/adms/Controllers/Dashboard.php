@@ -10,7 +10,7 @@ class Dashboard
 
     public function index(): void
     {
-        $this->data = "Bem Vindo, {$_SESSION['user_name']}!";
+        $this->data = "Bem Vindo(a), {$_SESSION['user_name']}!";
 
         $view = new ConfigView("adms/Views/dashboard/dashboard", $this->data);
         $view->loadView();
