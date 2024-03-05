@@ -2,8 +2,6 @@
 
 namespace App\adms\Controllers;
 
-use Core\ConfigController;
-
 class Logout 
 {
     public function index(): void

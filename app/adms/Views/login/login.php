@@ -10,19 +10,13 @@
 
 <form action="" method="POST" id="form-login">
     <label for="user">Usuário</label><br>
-    <input type="text" id="user" name="user" oninput="toUpperCase(event)" placeholder="Digite o usuário"><br><br>
+    <input type="text" id="user" name="user" oninput="toUpperCase(event)" placeholder="Digite o usuário" required><br><br>
     <label for="password">Senha</label><br>
-    <input type="password" id="password" name="password" placeholder="Digite a senha"><br><br>
+    <input type="password" id="password" name="password" placeholder="Digite a senha" required><br><br>
 
     <button type="submit" name="sendLogin" value="Acessar">Acessar</button>
 </form>
 
 <p><a href="<?= URL . "new-user/index"; ?>">Cadastrar</a></p>
 
-<!-- Script para converter o texto do input para maiúsculo: -->
-<script>
-    function toUpperCase(event) {
-    var userInput = event.target;
-    userInput.value = userInput.value.toUpperCase();
-}
-</script>
+<script src="<?= URL . 'app/adms/assets/js/toUpper.js'?>"></script>

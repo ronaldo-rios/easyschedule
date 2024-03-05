@@ -19,4 +19,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `users` (`name`, `nickname`, `email`, `user`, `password`, `created_at`)
-VALUES ('User to Test', 'usertotest', 'suporte@teste.com', 'usertest' , '$2y$10$/.TYF6aI9NHA.b1w9s40xuGZzoGHW/31XMWAPyPXHqHgyc3NZAHde', NOW());
+VALUES ('User to Test', 'USERTOTEST', 'suporte@teste.com', 'USERTEST' , '$2y$10$hqgJV15KX4k8e06PY.aL7OqSnHA0at.ng5iamwGKBpcJRDdYLCSB2', NOW());

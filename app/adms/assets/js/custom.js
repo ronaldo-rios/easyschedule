@@ -60,6 +60,22 @@ if (formNewUser) {
             document.getElementById('msg').innerHTML = '<p style="color:red;">Campo senha é obrigatório.</p>'
             return
         }
+
+        // Check if the password has at least 6 characters
+        if(passwordUser.length < 6){
+            e.preventDefault()
+            document.getElementById('msg').innerHTML = '<p style="color:red;">Senha deve ter no mínimo 6 caracteres.</p>'
+            return
+        }
+
+        // Validate if the password has at least one uppercase letter, one lowercase letter and one number
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+        if (! regex.test(passwordUser)) {
+            e.preventDefault()
+            document.getElementById('msg').innerHTML = '<p style="color:red;">Senha deve conter pelo menos uma letra maiúscula, uma letra minúscula e um número.</p>'
+            return
+        }
+
     })
 
 }
