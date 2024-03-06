@@ -3,6 +3,8 @@
 namespace App\adms\Models;
 
 use App\adms\Models\helpers\Connection;
+use App\adms\Models\AdmsEmailCredencials;
+use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
 
 class AdmsNewUser 
@@ -10,6 +12,8 @@ class AdmsNewUser
     private ?array $data;
     private object $conn;
     private bool $result = false;
+    private string $firstName;
+    private array $emailData;
 
     public function getResult(): bool
     {
@@ -37,8 +41,15 @@ class AdmsNewUser
 
             if(! $ifExists) {
 
+                ValidatePassword::validate($this->data['password']);
+                if (ValidatePassword::getResult() === false) {
+                    $this->result = false;
+                    return;
+                }
+                
                 $encriptPassword = password_hash($this->data['password'], PASSWORD_BCRYPT);
                 $email = trim(filter_var($this->data['email'], FILTER_VALIDATE_EMAIL));
+                $confirmEmail = password_hash($encriptPassword . date('Y-m-d H:i:s'), PASSWORD_BCRYPT);
 
                 if (! $email) {
                     $_SESSION['msg'] = "<div class='alert alert-danger'>Email inválido!</div>";
@@ -52,11 +63,11 @@ class AdmsNewUser
                 $sqlInsert->bindValue(':email', $email, \PDO::PARAM_STR);
                 $sqlInsert->bindValue(':user', trim($this->data['user']), \PDO::PARAM_STR);
                 $sqlInsert->bindValue(':password', $encriptPassword, \PDO::PARAM_STR);
+                $sqlInsert->bindValue(':confirm_email', $confirmEmail, \PDO::PARAM_STR);
                 $sqlInsert->execute();
 
                 if($sqlInsert->rowCount()) {
-                    $_SESSION['msg'] = "<div class='alert alert-success'>Usuário cadastrado com sucesso!</div>";
-                    $this->result = true;
+                    $this->sendEmail();
                 } 
                 else {
                     $_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao cadastrar usuário!</div>";
@@ -98,7 +109,48 @@ class AdmsNewUser
     private function insertUser(): string
     {
         return "INSERT INTO `users` 
-            (`name`, `nickname`, `email`, `user`, `password`, `created_at`) 
-            VALUES (:name, UPPER(:nickname), LOWER(:email), UPPER(:user), :password, NOW())";
+            (`name`, `nickname`, `email`, `user`, `password`, `confirm_email`, `created_at`) 
+            VALUES 
+            (:name, UPPER(:nickname), LOWER(:email), UPPER(:user), :password, :confirm_email, NOW())";
+    }
+
+    private function sendEmail(): void
+    {
+        $this->contentEmailHtml();
+        $this->contentEmailText();
+
+        AdmsEmailCredencials::readEmailCredencials($this->emailData);
+        if(AdmsEmailCredencials::getResult()) {
+            $_SESSION['msg'] = "<div class='alert alert-success'>
+            Usuário cadastrado com sucesso! Um email de confirmação foi enviado para o email informado.
+            </div>";
+            $this->result = true;
+        } 
+        else {
+            $_SESSION['msg'] = "<div class='alert alert-danger'>
+            Erro ao enviar e-mail de confirmação! Entre em contato com " . ADM_EMAIL .
+            "</div>";
+            $this->result = false;
+        }
+    }
+
+    private function contentEmailHtml(): void
+    {
+        $name = explode(" ", $this->data['name']);
+        $this->firstName = $name[0];
+        $this->emailData['toEmail'] = $this->data['email'];
+        $this->emailData['toName'] = $this->data['name'];
+        $this->emailData['subject'] = 'Confirmação de cadastro';
+
+        $url = URL . 'conf-email/index?key=' . $this->data['confirm_email'];
+        $this->emailData['contentHtml'] = "<a><p>Olá <Strong>{$this->firstName}</strong>! Clique no link para confirmar seu cadastro!</p>";
+        $this->emailData['contentHtml'] .= "<a href='$url'>{$url}</a><br><br>";
+    }
+
+    private function contentEmailText(): void
+    {
+        $url = URL . 'conf-email/index?key=' . $this->data['confirm_email'];
+        $this->emailData['contentText'] = "Olá {$this->firstName}! Clique no link para confirmar seu cadastro!";
+        $this->emailData['contentText'] .= $url . "\n\n";
     }
 }

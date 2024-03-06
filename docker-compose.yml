@@ -12,7 +12,7 @@ services:
       - ./app:/var/www/html/app
       - ./core:/var/www/html/core
       - ./index.php:/var/www/html/index.php
-      - ./.htaccess:/var/www/html/.htaccess
+      - .:/var/www/html
     depends_on:
       - db
 

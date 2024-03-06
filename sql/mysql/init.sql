@@ -13,9 +13,25 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `recover_password` varchar(255) NULL,
   `image` varchar(255) NULL,
+  `confirm_email` VARCHAR(225) NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `config_emails` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(225) NOT NULL,
+    `name` VARCHAR(225) NOT NULL,
+    `email` VARCHAR(225) NOT NULL,
+    `host` VARCHAR(225) NOT NULL,
+    `username` VARCHAR(225) NOT NULL,
+    `password` VARCHAR(225) NOT NULL,
+    `smtp_secure` VARCHAR(225) NOT NULL,
+    `port` INT NOT NULL,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 INSERT INTO `users` (`name`, `nickname`, `email`, `user`, `password`, `created_at`)

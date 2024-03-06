@@ -41,7 +41,7 @@ RUN a2enmod headers
 COPY app /var/www/html/app
 COPY core /var/www/html/core
 COPY index.php /var/www/html/index.php
-COPY .htaccess /var/www/html/.htaccess
+COPY . /var/www/html/
 COPY ./composer.json /var/www/html/composer.json
 
 # Install dependencies
