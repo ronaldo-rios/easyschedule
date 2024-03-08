@@ -4,13 +4,13 @@ namespace App\adms\Models;
 
 use PDO;
 use App\adms\Models\helpers\Connection;
+use App\adms\Enum\UserSituation;
 
 class AdmsLogin
 {
     private ?array $data;
     private object $conn;
-    private bool $result;
-   
+    private bool $result = false;
 
     public function getResult(): bool
     {
@@ -28,7 +28,7 @@ class AdmsLogin
         $resultUser = $sqlUser->fetch();
 
         if ($resultUser) {
-            $this->validatePassword($resultUser);
+            $this->validateIfEmailConfirm($resultUser);
         } 
         else {
             $_SESSION['msg'] = "<div class='alert alert-danger'>Usuário ou senha incorretos</div>";
@@ -38,7 +38,7 @@ class AdmsLogin
 
     private function validateUser(): string
     {
-        return "SELECT `id`, `name`, `nickname`, `email`, `password`, `image` 
+        return "SELECT `id`, `name`, `nickname`, `email`, `password`, `image`, `user_situation_id` 
                 FROM `users` 
                     WHERE UPPER(`user`) = UPPER(:user)
                     LIMIT 1";
@@ -52,11 +52,27 @@ class AdmsLogin
             $_SESSION['user_nickname'] = $resultUser['nickname'];
             $_SESSION['user_email'] = $resultUser['email'];
             $_SESSION['user_image'] = $resultUser['image'];
+            $_SESSION['user_situation_id'] = $resultUser['user_situation_id'];
             $this->result = true;
         }
         else {
             $_SESSION['msg'] = "<div class='alert alert-danger'>Usuário ou senha incorretos</div>";
             $this->result = false;
         }
+    }
+    
+    private function validateIfEmailConfirm(array $resultUser)
+    {
+        $userSituationId = $resultUser['user_situation_id'];
+        $message = "";
+
+        $message = match ($userSituationId) {
+            UserSituation::CONFIRMED_EMAIL->value => $this->validatePassword($resultUser),
+            UserSituation::WAITING_FOR_CONFIRMATION->value => "<div class='alert alert-danger'>Você precisa confirmar seu e-mail para acessar.</div>",
+            UserSituation::NOT_REGISTERED->value => "<div class='alert alert-danger'>Usuário não cadastrado. Entre em contato com a empresa</div>",
+            default => "<div class='alert alert-danger'>Usuário inativo. Entre em contato com a empresa</div>",
+        };
+    
+        $_SESSION['msg'] = $message;
     }
 }

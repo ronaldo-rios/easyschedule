@@ -3,18 +3,19 @@
 namespace App\adms\Controllers;
 
 use Core\ConfigView;
+use App\adms\Models\AdmsNewUser;
 
 class NewUser
 {
     private string|array|null $data = null;
     private ?array $formData;
 
-    public function index()
+    public function index(): void
     {
         $this->formData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         if(! empty($this->formData['sendNewUser'])) {
-            $register = new \App\adms\Models\AdmsNewUser();
+            $register = new AdmsNewUser();
             $register->create($this->formData);
 
             if($register->getResult()) {

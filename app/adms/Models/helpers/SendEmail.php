@@ -54,7 +54,7 @@ class SendEmail
             $mail->SMTPAuth   = true;                                   
             $mail->Username   = $this->mailInfo['username'];                   
             $mail->Password   = $this->mailInfo['password'];                             
-            $mail->SMTPSecure = $this->mailInfo['smtpsecure'];            
+            $mail->SMTPSecure = $this->mailInfo['smtpsecure'];   // PHPMailer::ENCRYPTION_STARTTLS; PHPMailer::ENCRYPTION_SMTPS;       
             $mail->Port       = $this->mailInfo['port'];
 
             //Recipients
