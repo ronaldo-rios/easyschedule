@@ -52,7 +52,7 @@ class ConfirmEmail
         return (int) $resultToHash->fetchColumn();
     }
 
-    private function updateSituation(int $id): string
+    private function updateSituation(int $id): bool
     {
         $confirmEmail = null;
         $update = "UPDATE `users` 

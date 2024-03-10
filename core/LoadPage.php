@@ -65,7 +65,9 @@ class LoadPage
     private static function publicPage(): void
     {
         // List of public pages:
-        self::$listPublicPage = ["Login", "Error", "Logout", "NewUser", "ConfirmEmail"];
+        self::$listPublicPage = [
+            "Login", "Error", "Logout", "NewUser", "ConfirmEmail", "NewConfirmEmail"
+        ];
 
         in_array(self::$urlController, self::$listPublicPage)
             ? self::$classLoad = "\\App\\adms\\Controllers\\" . self::$urlController

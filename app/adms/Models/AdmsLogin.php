@@ -68,7 +68,8 @@ class AdmsLogin
 
         $message = match ($userSituationId) {
             UserSituation::CONFIRMED_EMAIL->value => $this->validatePassword($resultUser),
-            UserSituation::WAITING_FOR_CONFIRMATION->value => "<div class='alert alert-danger'>Você precisa confirmar seu e-mail para acessar.</div>",
+            UserSituation::WAITING_FOR_CONFIRMATION->value => "<div class='alert alert-danger'>Você precisa confirmar seu e-mail para acessar. 
+            Clique <a href='" . URL . "new-confirm-email/index'> aqui </a> para reenviar o e-mail de confirmação.</div>",
             UserSituation::NOT_REGISTERED->value => "<div class='alert alert-danger'>Usuário não cadastrado. Entre em contato com a empresa</div>",
             default => "<div class='alert alert-danger'>Usuário inativo. Entre em contato com a empresa</div>",
         };
