@@ -12,6 +12,11 @@ class ValidatePassword
         return self::$result;
     }
 
+    /**
+     * Static function to validate password
+     * @param string $password
+     * @return void
+     */
     public static function validate(string $password): void
     {
         $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';

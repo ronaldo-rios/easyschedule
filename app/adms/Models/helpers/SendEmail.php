@@ -19,6 +19,11 @@ class SendEmail
         return $this->result;
     }
 
+    /**
+     * Function to send email
+     * @param array $resultDb [host, username, password, email, name, smtp_secure, port]
+     * @return void
+     */
     public function send(array $resultDb, array $data): void
     {
         $this->mailInfo['host'] = $resultDb['host'];
@@ -41,6 +46,10 @@ class SendEmail
         $this->sendWithPHPMailer();
     }
 
+    /**
+     * Function to send email with PHPMailer
+     * @return void
+     */
     private function sendWithPHPMailer(): void
     {
         $mail = new PHPMailer(true);

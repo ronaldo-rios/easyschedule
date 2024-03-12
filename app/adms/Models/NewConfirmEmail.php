@@ -3,6 +3,7 @@
 namespace App\adms\Models;
 
 use PDO;
+use App\adms\Enum\ConfigEmails;
 use App\adms\Models\helpers\SendEmail;
 use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\ValidateEmptyField;
@@ -15,6 +16,7 @@ class NewConfirmEmail
     private bool $result = false;
     private string $confirmEmail;
     private object $conn;
+    private int $optionConfigEmail = ConfigEmails::REGISTER_CONFIRMATION->value;
 
     public function getResult(): bool
     {
@@ -103,7 +105,7 @@ class NewConfirmEmail
         $this->emailHtml($result);
         $this->emailText($result);
 
-        AdmsEmailCredencials::readEmailCredencials($this->emailData);
+        AdmsEmailCredencials::readEmailCredencials($this->emailData, $this->optionConfigEmail);
         if(AdmsEmailCredencials::getResult()) {
             $_SESSION['msg'] = "<div class='alert alert-success'>
             Novo link enviado para o e-mail {$result['email']}! Confira sua caixa de entrada.

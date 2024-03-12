@@ -66,7 +66,13 @@ class LoadPage
     {
         // List of public pages:
         self::$listPublicPage = [
-            "Login", "Error", "Logout", "NewUser", "ConfirmEmail", "NewConfirmEmail"
+            "Login", 
+            "Error", 
+            "Logout", 
+            "NewUser", 
+            "ConfirmEmail", 
+            "NewConfirmEmail", 
+            "RecoverPassword"
         ];
 
         in_array(self::$urlController, self::$listPublicPage)

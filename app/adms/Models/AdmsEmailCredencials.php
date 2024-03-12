@@ -8,18 +8,17 @@ use App\adms\Models\helpers\Connection;
 class AdmsEmailCredencials
 {
     private static bool $result = false;
-    private static int $optionConfigEmail = 1;
 
     public static function getResult(): bool
     {
         return self::$result;
     }
 
-    public static function readEmailCredencials(array $emailData): void
+    public static function readEmailCredencials(array $emailData, int $optionConfigEmail): void
     {
         $conn = Connection::connect();
         $readEmailCredencials = $conn->prepare(self::queryCredentials());
-        $readEmailCredencials->bindValue(':id', self::$optionConfigEmail, \PDO::PARAM_INT);
+        $readEmailCredencials->bindValue(':id', $optionConfigEmail, \PDO::PARAM_INT);
         $readEmailCredencials->execute();
         $resultDb = (array) $readEmailCredencials->fetch();
 

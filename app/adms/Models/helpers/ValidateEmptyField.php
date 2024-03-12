@@ -12,6 +12,11 @@ class ValidateEmptyField
         return self::$result;
     }
 
+    /**
+     * Static function to validate empty field
+     * @param array|null $data
+     * @return void
+     */
     public static function validateField(?array $data): void
     {
         self::$data = $data;

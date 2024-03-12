@@ -2,6 +2,7 @@
 
 namespace App\adms\Models;
 
+use App\adms\Enum\ConfigEmails;
 use App\adms\Enum\UserSituation;
 use App\adms\Models\helpers\Connection;
 use App\adms\Models\AdmsEmailCredencials;
@@ -17,6 +18,7 @@ class AdmsNewUser
     private array $emailData;
     private string $confirmEmail;
     private int $waitingConfirm = UserSituation::WAITING_FOR_CONFIRMATION->value;
+    private int $optionConfigEmail = ConfigEmails::REGISTER_CONFIRMATION->value;
 
     public function getResult(): bool
     {
@@ -124,7 +126,7 @@ class AdmsNewUser
         $this->contentEmailHtml();
         $this->contentEmailText();
 
-        AdmsEmailCredencials::readEmailCredencials($this->emailData);
+        AdmsEmailCredencials::readEmailCredencials($this->emailData, $this->optionConfigEmail);
         if(AdmsEmailCredencials::getResult()) {
             $_SESSION['msg'] = "<div class='alert alert-success'>
             Usuário cadastrado com sucesso! Um email de confirmação foi enviado para o email informado.

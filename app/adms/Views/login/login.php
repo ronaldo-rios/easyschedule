@@ -17,6 +17,7 @@
     <button type="submit" name="sendLogin" value="Acessar">Acessar</button>
 </form>
 
-<p><a href="<?= URL . "new-user/index"; ?>">Cadastrar</a></p>
+<p><a href="<?= URL . 'new-user/index'; ?>">Cadastrar</a></p>
+<p><a href="<?= URL . 'recover-password/index'; ?>">Esqueci minha senha</a></p>
 
 <script src="<?= URL . 'app/adms/assets/js/toUpper.js'?>"></script>

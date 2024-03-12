@@ -10,7 +10,7 @@
 
 <form action="" method="POST" id="form-new-confirm-email">
     <label for="emailconfirm">E-mail</label><br>
-    <input type="email" id="emailconfirm" name="email" placeholder="Digite o seu e-mail" ><br><br>
+    <input type="email" id="emailconfirm" name="email" placeholder="Digite o seu e-mail" required><br><br>
 
     <button type="submit" name="sendNewConfirmEmail" value="Enviar">Enviar</button>
 </form>
