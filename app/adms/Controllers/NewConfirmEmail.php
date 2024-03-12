@@ -22,7 +22,7 @@ class NewConfirmEmail
     private function viewNewConfirmEmail(): void
     {
         $view = new ConfigView("adms/Views/login/newConfirmEmail", $this->data);
-        $view->loadView();
+        $view->loadViewLogin();
     }
 
     private function newConfirmEmail(): void

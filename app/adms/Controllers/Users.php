@@ -2,10 +2,15 @@
 
 namespace App\adms\Controllers;
 
+use Core\ConfigView;
+
 class Users
 {
-    public function index()
+    private ?array $data = [];
+
+    public function index(): void
     {
-        echo "Página de usuários";
+        $view = new ConfigView("adms/Views/users/users", $this->data);
+        $view->loadView();
     }
 }

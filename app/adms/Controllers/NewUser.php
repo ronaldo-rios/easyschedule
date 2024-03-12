@@ -37,6 +37,6 @@ class NewUser
     private function viewNewUser(): void
     {
         $view = new ConfigView("adms/Views/login/newUser", $this->data);
-        $view->loadView();
+        $view->loadViewLogin();
     }
 }

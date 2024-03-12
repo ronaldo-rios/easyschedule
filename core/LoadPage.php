@@ -72,7 +72,8 @@ class LoadPage
             "NewUser", 
             "ConfirmEmail", 
             "NewConfirmEmail", 
-            "RecoverPassword"
+            "RecoverPassword",
+            "UpdatePassword"
         ];
 
         in_array(self::$urlController, self::$listPublicPage)
@@ -87,7 +88,7 @@ class LoadPage
     private static function privatePage(): void
     {
         // List of private pages:
-        self::$listPrivatePage = ["Dashboard", "Users"];
+        self::$listPrivatePage = ["Dashboard", "Users", "ViewUsers"];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {
             self::verifyLoged();

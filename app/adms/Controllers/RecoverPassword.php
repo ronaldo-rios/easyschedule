@@ -6,7 +6,7 @@ use App\adms\Models\RecoverPassword as ModelsRecoverPassword;
 
 class RecoverPassword
 {
-    private ?array $data = null;
+    private string|array|null $data = null;
 
     public function index(): void
     {
@@ -17,7 +17,7 @@ class RecoverPassword
     private function viewRecoverPassword(): void
     {
         $view = new \Core\ConfigView("adms/Views/login/recoverPassword", $this->data);
-        $view->loadView();
+        $view->loadViewLogin();
     }
 
     private function recoverPassword(array $formData): void

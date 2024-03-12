@@ -69,7 +69,8 @@ class RecoverPassword
         $id = $resultUser['id'];
 
         $update = "UPDATE `users` 
-                  SET `recover_password` = :recover_password 
+                  SET `recover_password` = :recover_password,
+                      `updated_at` = NOW()
                   WHERE `id` = :id";
 
         $stmt = $this->conn->prepare($update);
@@ -116,7 +117,7 @@ class RecoverPassword
         $this->emailData['toName'] = $result['name'];
         $this->emailData['subject'] = 'Recuperar Senha';
 
-        $url = URL . 'confirm-email/index?key=' . $result['confirm_email'];
+        $url = URL . 'update-password/index?key=' . $this->data['recover_password'];
         $this->emailData['contentHtml'] = "<a><p>Olá <Strong>{$this->firstName}</strong>! Você solicitou a recuperação de seu acesso. 
         Clique no link para atualizar sua senha!</p>";
         $this->emailData['contentHtml'] .= "<a href='$url'>{$url}</a><br><br>";
@@ -124,7 +125,7 @@ class RecoverPassword
 
     private function emailText(array $result): void
     {
-        $url = URL . 'conf-email/index?key=' . $result['confirm_email'];
+        $url = URL . 'update-password/index?key=' . $this->data['recover_password'];
         $this->emailData['contentText'] = "Olá {$this->firstName}! Você solicitou a recuperação de seu acesso. 
         Clique no link para atualizar sua senha!";
         $this->emailData['contentText'] .= $url . "\n\n";

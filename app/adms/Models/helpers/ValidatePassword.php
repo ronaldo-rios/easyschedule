@@ -25,17 +25,16 @@ class ValidatePassword
             $_SESSION['msg'] = "<div class='alert alert-danger'>A senha deve ter no mínimo 6 caracteres!</div>";
             self::$result = false;
         } 
-
-        if (! preg_match($regex, $password)) {
+        else if (! preg_match($regex, $password)) {
             $_SESSION['msg'] = "<div class='alert alert-danger'>A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula e um número!</div>";
             self::$result = false;
         } 
-
-        if (stristr($password, "'")) {
+        else if (stristr($password, "'")) {
             $_SESSION['msg'] = "<div class='alert alert-danger'>Caractere ( ' ) não permitido!</div>";
             self::$result = false;
         }
-
-        self::$result = true;
+        else {
+            self::$result = true;
+        }
     }
 }

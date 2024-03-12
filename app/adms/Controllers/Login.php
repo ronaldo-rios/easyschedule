@@ -29,6 +29,6 @@ class Login
         } 
 
         $view = new ConfigView("adms/Views/login/login", null);
-        $view->loadView();
+        $view->loadViewLogin();
     }
 }

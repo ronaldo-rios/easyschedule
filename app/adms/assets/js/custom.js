@@ -1,5 +1,8 @@
-const formLogin = document.getElementById('form-login')
+if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+}
 
+const formLogin = document.getElementById('form-login')
 if (formLogin) {
     formLogin.addEventListener('submit', async(e) => {
 
@@ -21,7 +24,6 @@ if (formLogin) {
 }
 
 const formNewUser = document.getElementById('form-newuser')
-
 if (formNewUser) {
     formNewUser.addEventListener('submit', async(e) => {
 
