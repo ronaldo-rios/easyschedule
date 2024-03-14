@@ -49,7 +49,7 @@ class LoadPage
         $classLoad = new self::$classLoad();
 
         if (method_exists($classLoad, self::$urlMethod)) {
-            $classLoad->{self::$urlMethod}();
+            $classLoad->{self::$urlMethod}(self::$urlParameter);
         } 
         else {
             self::$urlMethod = SlugControllerOrMethod::slugMethod(METHOD);
@@ -88,7 +88,7 @@ class LoadPage
     private static function privatePage(): void
     {
         // List of private pages:
-        self::$listPrivatePage = ["Dashboard", "Users", "ViewUsers"];
+        self::$listPrivatePage = ["Dashboard", "Users", "ViewUser", "EditUser", "AddUser", "DeleteUser"];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {
             self::verifyLoged();

@@ -17,13 +17,15 @@ class ValidateEmptyField
      * @param array|null $data
      * @return void
      */
-    public static function validateField(?array $data): void
+    public static function validateField(?array $data, ?array $ignoreFields = []): void
     {
         self::$data = $data;
         self::$data = array_map('strip_tags', self::$data);
         self::$data = array_map('trim', self::$data);
-        
-        if (in_array('', self::$data)) {
+        // filters fields that should be ignored and should not be validated:
+        $filteredData = array_diff_key(self::$data, array_flip($ignoreFields));
+
+        if (in_array('', $filteredData)) {
             $_SESSION['msg'] = "<div class='alert alert-danger'>Necessário preencher todos os campos!</div>";
             self::$result = false;
         } else {
