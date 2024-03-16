@@ -11,5 +11,6 @@ if (isset($_SESSION['msg'])) {
 
 foreach($this->data['users'] as $user) {
     echo "<span>{$user['name']} - {$user['email']} - {$user['user']}</span><br>";
-    echo "<a href='". URL . "view-user/index/{$user['id']}'>Visualizar</a><br><br>";
+    echo "<a href='". URL . "view-user/index/{$user['id']}'>Visualizar</a><br>";
+    echo "<a href='". URL . "edit-user/index/{$user['id']}'>Editar</a><br><br>";
 }

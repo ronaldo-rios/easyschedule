@@ -14,7 +14,7 @@
     <label for="name">Nome</label><br>
     <input type="text" id="name" name="name" placeholder="Digite o nome completo" required><br><br>
     <label for="nickname">Apelido</label><br>
-    <input type="text" id="nickname" name="nickname" oninput="toUpperCase(event)" placeholder="Digite o apelido" required><br><br>
+    <input type="text" id="nickname" name="nickname" oninput="toUpperCase(event)" placeholder="Digite o apelido" ><br><br>
     <label for="email">E-mail</label><br>
     <input type="email" id="email" name="email" placeholder="Digite o e-mail" required><br><br>
     <label for="user">Usuário</label><br>

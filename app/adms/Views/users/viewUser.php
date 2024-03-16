@@ -8,12 +8,13 @@ if(isset($_SESSION['msg'])) {
 }
 
 if(isset($this->data['viewUser'])) {
+
     $userDetails = [
         'Imagem' => 'image',
         'Nome' => 'name',
         'Email' => 'email',
         'Usuário' => 'user',
-        'Nickname' => 'nickname',
+        'Apelido' => 'nickname',
         'Situação' => 'situation',
         'Criado em' => 'created_at',
         'Última atualização' => 'updated_at'
@@ -41,4 +42,6 @@ if(isset($this->data['viewUser'])) {
             }
         }
     }
+
+    echo "<br><a href='". URL . "edit-user/index/{$this->data['viewUser']['id']}'>Editar</a><br><br>";
 }

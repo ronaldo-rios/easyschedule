@@ -106,13 +106,12 @@ class AdmsNewUser
     private function insertUser($email,$encriptPassword, $confirmEmail, $situation): string
     {
         $insert = "INSERT INTO `users` 
-            (`name`, `nickname`, `email`, `user`, `password`, `confirm_email`, `user_situation_id`, `created_at`) 
+            (`name`, `email`, `user`, `password`, `confirm_email`, `user_situation_id`, `created_at`) 
             VALUES 
-            (:name, UPPER(:nickname), LOWER(:email), UPPER(:user), :password, :confirm_email, :user_situation, NOW())";
+            (:name, LOWER(:email), UPPER(:user), :password, :confirm_email, :user_situation, NOW())";
 
         $sqlInsert = $this->conn->prepare($insert);
         $sqlInsert->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
-        $sqlInsert->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $sqlInsert->bindValue(':email', $email, \PDO::PARAM_STR);
         $sqlInsert->bindValue(':user', trim($this->data['user']), \PDO::PARAM_STR);
         $sqlInsert->bindValue(':password', $encriptPassword, \PDO::PARAM_STR);

@@ -27,7 +27,7 @@ class AddUser
     public function add(?array $data): void
     {
         $this->data = $data;
-        $ignoreFields = ['image'];
+        $ignoreFields = ['image', 'nickname'];
         ValidateEmptyField::validateField($this->data, $ignoreFields);
 
         if(ValidateEmptyField::getResult()){
@@ -112,7 +112,13 @@ class AddUser
 
     private function insertUser($email,$encriptPassword, $confirmEmail, $situation): string
     {
-        $this->data['image'] = '' ?? URL . 'assets/images/user_default.png';
+        if(empty($this->data['image'])) {
+            $this->data['image'] = null;
+        }
+
+        if (empty($this->data['nickname'])) {
+            $this->data['nickname'] = null;
+        }
 
         $insert = "INSERT INTO `users` 
             (   

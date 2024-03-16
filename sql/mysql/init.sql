@@ -42,7 +42,7 @@ CREATE TABLE `users_situation`(
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `nickname` varchar(100) NOT NULL,
+  `nickname` varchar(100) NULL,
   `email` varchar(100) UNIQUE NOT NULL,
   `user` varchar(100) UNIQUE NOT NULL,
   `password` varchar(255) NOT NULL,
