@@ -45,7 +45,6 @@ class EditUser
             $user->edit($formData);
 
             if ($user->getResult()) {
-                $_SESSION['msg'] = "<div class='alert alert-success'>Usuário editado com sucesso!</div>";
                 header("Location: " . URL . "view-user/index/{$formData['id']}");
                 exit;
             }

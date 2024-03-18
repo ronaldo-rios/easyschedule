@@ -88,7 +88,14 @@ class LoadPage
     private static function privatePage(): void
     {
         // List of private pages:
-        self::$listPrivatePage = ["Dashboard", "Users", "ViewUser", "EditUser", "AddUser", "DeleteUser"];
+        self::$listPrivatePage = [
+            "Dashboard", 
+            "Users", 
+            "ViewUser", 
+            "EditUser", 
+            "AddUser", 
+            "DeleteUser"
+        ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {
             self::verifyLoged();

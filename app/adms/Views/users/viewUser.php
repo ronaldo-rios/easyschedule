@@ -23,8 +23,11 @@ if(isset($this->data['viewUser'])) {
     foreach ($userDetails as $label => $key) {
         if (isset($this->data['viewUser'][$key])) {
             if ($key === 'image') {
-                $imageSrc = $this->data['viewUser'][$key] ? $this->data['viewUser'][$key] : '';
-                echo "<img src='". URL . "assets/images/users/" . $imageSrc . "' alt='{$this->data['viewUser']['name']}'><br>";
+                $imageSrc = $this->data['viewUser'][$key] 
+                    ? PATH_USER_IMAGE . $this->data['viewUser']['id'] . "/". $this->data['viewUser']['image'] 
+                    : PATH_USER_IMAGE . 'default.png';
+                    
+                echo "<img style='width:10em; height:9em;' src='". $imageSrc . "' alt='{$this->data['viewUser']['name']}'><br>";
             } 
             elseif ($key === 'created_at' || $key === 'updated_at') {
             // Adjust the date format:

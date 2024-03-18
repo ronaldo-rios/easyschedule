@@ -3,6 +3,7 @@
 namespace App\adms\Models;
 
 use App\adms\Models\helpers\Connection;
+use App\adms\Models\helpers\UploadImage;
 use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
 
@@ -11,6 +12,8 @@ class EditUser
     private bool $result = false;
     private object $conn;
     private ?array $data;
+    private string $encriptPassword;
+    private ?array $userInfo = [];
 
     public function getResult() {
         return $this->result;
@@ -19,7 +22,7 @@ class EditUser
     public function viewInfoUser(int $id): ?array
     {
         $this->conn = Connection::connect();
-        return $this->detailsUser($id); 
+        return $this->detailsUser($id);
     }
 
     public function edit(?array $formData): void
@@ -31,7 +34,7 @@ class EditUser
         if(ValidateEmptyField::getResult()){
             $this->conn = Connection::connect();
             $user = $this->queryUser();
-            var_dump($user);
+
             if ($user) {
                 $this->verifyIfEmailExists($user);
                 $this->verifyIfUserExists($user);
@@ -39,6 +42,14 @@ class EditUser
         
             if (! $user) {
 
+                ValidatePassword::validate($this->data['password']);
+                if (ValidatePassword::getResult() === false) {
+                    $this->result = false;
+                    return;
+                }
+
+                $this->data['image'] = !empty($_FILES['image']) ? $_FILES['image'] : null;
+                $this->encriptPassword = password_hash($this->data['password'], PASSWORD_BCRYPT);
                 $this->data['email'] = trim(filter_var($this->data['email'], FILTER_VALIDATE_EMAIL));
 
                 if (! $this->data['email']) {
@@ -75,9 +86,21 @@ class EditUser
         return [];
     }
 
+    private function fetchCurrentUserImage(int $id): ?string
+    {
+        $queryImage = "SELECT `image` 
+                       FROM `users` WHERE `id` = :id";
+
+        $statement = $this->conn->prepare($queryImage);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchColumn();
+        return !empty($result) ? (string) $result : null;
+    }
+
     private function queryUser(): array
     {
-        $sql = "SELECT `id`, `user`, `email` 
+        $sql = "SELECT `id`, `user`, `email`
                 FROM `users` 
                 WHERE `id` <> :id
                 AND (
@@ -103,8 +126,23 @@ class EditUser
 
     private function updateUser(): void
     {
+        
+        if($this->data['image'] !== null) {
+            // Get user details to delete old image if !empty
+            $oldImage = $this->fetchCurrentUserImage((int) $this->data['id']);
+           
+            if ($oldImage && is_string($oldImage)) {
+                UploadImage::deleteBeforeImage($this->data, $oldImage);
+            } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao remover a imagem antiga!</div>";
+                return;
+            }
+
+            $this->data['image'] = UploadImage::uploadUserImage($this->data);
+        }
+     
         $update = "UPDATE `users`
-                        SET `name` = :name, `email` = :email,
+                        SET `name` = :name, `email` = :email, `password` = :password,
                             `user` = :user, `nickname` = :nickname,
                             `image` = :image, `updated_at` = NOW()
                         WHERE `id` = :id";
@@ -112,6 +150,7 @@ class EditUser
         $stmt = $this->conn->prepare($update);
         $stmt->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
         $stmt->bindValue(':email', $this->data['email'], \PDO::PARAM_STR);
+        $stmt->bindValue(':password', $this->encriptPassword, \PDO::PARAM_STR);
         $stmt->bindValue(':user', $this->data['user'], \PDO::PARAM_STR);
         $stmt->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $stmt->bindValue(':image', $this->data['image'], \PDO::PARAM_STR);
