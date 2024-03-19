@@ -33,6 +33,8 @@ class EditUser
 
     private function viewEditUser(): void
     {
+        $dropdownSituations = new ModelsEditUser();
+        $this->data['select'] = $dropdownSituations->listSelectSituation();
         $view = new ConfigView("adms/Views/users/editUser", $this->data);
         $view->loadView();
     }

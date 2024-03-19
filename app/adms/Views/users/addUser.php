@@ -9,8 +9,6 @@
 <span id="msg"></span>
 
 <form action="" method="POST" id="form-adduser">
-    <label for="image">Imagem</label><br>
-    <input type="file" id="image" name="image" ><br><br>
     <label for="name">Nome</label><br>
     <input type="text" id="name" name="name" placeholder="Digite o nome completo" required><br><br>
     <label for="nickname">Apelido</label><br>

@@ -94,7 +94,8 @@ class LoadPage
             "ViewUser", 
             "EditUser", 
             "AddUser", 
-            "DeleteUser"
+            "DeleteUser",
+            "ViewProfile",
         ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {

@@ -23,6 +23,19 @@
     <input type="text" id="user" name="user" oninput="toUpperCase(event)" placeholder="Digite o usuário" value="<?=$this->data['editUser']['user'];?>" required><br><br>
     <label for="password">Senha</label><br>
     <input type="password" id="password" name="password" placeholder="Digite a senha" value="<?=$this->data['editUser']['password'];?>" required><br><br>
+    <label for="user_situation_id">Situação</label><br>
+    <select id="user_situation_id" name="user_situation_id" required>
+        <option value="">Selecione</option>
+        <?php
+            foreach($this->data['select'] as $situation): ?>
+                <?php if($this->data['editUser']['user_situation_id'] == $situation['id']): ?>
+                    <option value='<?= $situation['id']; ?>' selected><?= $situation['situation_name']; ?></option>
+                <?php else: ?>
+                    <option value='<?= $situation['id']; ?>'><?= $situation['situation_name'];?></option>
+                <?php endif; ?>
+            <? endforeach;
+        ?>
+    </select><br><br>
 
     <button type="submit" name="sendEditUser" value="Atualizar">Atualizar</button>
 </form>

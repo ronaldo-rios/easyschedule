@@ -44,9 +44,9 @@ class UploadImage
      * @param array $resultDbImage
      * @return void
      */
-    public static function deleteBeforeImage(array $dataImage, string $resultDbImage): void
+    public static function deleteBeforeImage(array $data, string $resultDbImage): void
     {
-        $imagePath = $_SERVER['DOCUMENT_ROOT'] . PATH_USER_IMAGE . $dataImage['id'] . "/" . $resultDbImage;
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . PATH_USER_IMAGE . $data['id'] . "/" . $resultDbImage;
         if (file_exists($imagePath) && is_file($imagePath)) {
             unlink($imagePath);
         }

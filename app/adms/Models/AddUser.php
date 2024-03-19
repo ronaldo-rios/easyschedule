@@ -5,6 +5,7 @@ namespace App\adms\Models;
 use App\adms\Enum\ConfigEmails;
 use App\adms\Enum\UserSituation;
 use App\adms\Models\helpers\Connection;
+use App\adms\Models\helpers\UploadImage;
 use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
 
@@ -27,7 +28,7 @@ class AddUser
     public function add(?array $data): void
     {
         $this->data = $data;
-        $ignoreFields = ['image', 'nickname'];
+        $ignoreFields = ['nickname'];
         ValidateEmptyField::validateField($this->data, $ignoreFields);
 
         if(ValidateEmptyField::getResult()){
@@ -47,6 +48,7 @@ class AddUser
                     return;
                 }
 
+                $this->data['nickname'] = !empty($this->data['nickname']) ? $this->data['nickname'] : null;
                 $encriptPassword = password_hash($this->data['password'], PASSWORD_BCRYPT);
                 $email = trim(filter_var($this->data['email'], FILTER_VALIDATE_EMAIL));
                 $this->confirmEmail = password_hash($encriptPassword . date('Y-m-d H:i:s'), PASSWORD_BCRYPT);
@@ -112,29 +114,21 @@ class AddUser
 
     private function insertUser($email,$encriptPassword, $confirmEmail, $situation): string
     {
-        if(empty($this->data['image'])) {
-            $this->data['image'] = null;
-        }
-
-        if (empty($this->data['nickname'])) {
-            $this->data['nickname'] = null;
-        }
 
         $insert = "INSERT INTO `users` 
             (   
-                `image`, `name`, `nickname`, 
+                `name`, `nickname`, 
                 `email`, `user`, `password`, 
                 `confirm_email`, `user_situation_id`, `created_at`
             ) 
             VALUES 
             (
-                :image, :name, UPPER(:nickname), 
+                :name, UPPER(:nickname), 
                 LOWER(:email), UPPER(:user), :password, 
                 :confirm_email, :user_situation, NOW()
             )";
 
         $sqlInsert = $this->conn->prepare($insert);
-        $sqlInsert->bindValue(':image', $this->data['image'], \PDO::PARAM_STR);
         $sqlInsert->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
         $sqlInsert->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $sqlInsert->bindValue(':email', $email, \PDO::PARAM_STR);

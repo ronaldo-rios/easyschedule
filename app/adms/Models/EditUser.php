@@ -63,10 +63,22 @@ class EditUser
         }
     }
 
+    public function listSelectSituation(): ?array
+    {
+        $this->conn = Connection::connect();
+        $sql = "SELECT `id`, `situation_name` 
+                FROM `users_situation`
+                ORDER BY `id` ASC";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     private function detailsUser(int $id): ?array
     {
         $queryUser = "SELECT `id`, `name`, `email`, `password`,
-                             `user`, `image`, `nickname`, `updated_at`
+                             `user`, `image`, `nickname`, `user_situation_id`, `updated_at`
                       FROM `users`
                       WHERE `id` = :id
                       LIMIT 1";
@@ -131,12 +143,9 @@ class EditUser
             // Get user details to delete old image if !empty
             $oldImage = $this->fetchCurrentUserImage((int) $this->data['id']);
            
-            if ($oldImage && is_string($oldImage)) {
+            if ($oldImage) {
                 UploadImage::deleteBeforeImage($this->data, $oldImage);
-            } else {
-                $_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao remover a imagem antiga!</div>";
-                return;
-            }
+            } 
 
             $this->data['image'] = UploadImage::uploadUserImage($this->data);
         }
@@ -144,7 +153,8 @@ class EditUser
         $update = "UPDATE `users`
                         SET `name` = :name, `email` = :email, `password` = :password,
                             `user` = :user, `nickname` = :nickname,
-                            `image` = :image, `updated_at` = NOW()
+                            `image` = :image, `user_situation_id` = :user_situation_id, 
+                            `updated_at` = NOW()
                         WHERE `id` = :id";
 
         $stmt = $this->conn->prepare($update);
@@ -154,6 +164,7 @@ class EditUser
         $stmt->bindValue(':user', $this->data['user'], \PDO::PARAM_STR);
         $stmt->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $stmt->bindValue(':image', $this->data['image'], \PDO::PARAM_STR);
+        $stmt->bindValue(':user_situation_id', $this->data['user_situation_id'], \PDO::PARAM_INT);
         $stmt->bindValue(':id', $this->data['id'], \PDO::PARAM_INT);
         $stmt->execute();
 
