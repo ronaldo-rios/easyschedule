@@ -8,6 +8,7 @@ use App\adms\Models\helpers\Connection;
 use App\adms\Models\AdmsEmailCredencials;
 use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
+use App\adms\Models\helpers\ConvertToCapitularString;
 
 class AdmsNewUser 
 {
@@ -111,7 +112,7 @@ class AdmsNewUser
             (:name, LOWER(:email), UPPER(:user), :password, :confirm_email, :user_situation, NOW())";
 
         $sqlInsert = $this->conn->prepare($insert);
-        $sqlInsert->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
+        $sqlInsert->bindValue(':name', ConvertToCapitularString::format($this->data['name']), \PDO::PARAM_STR);
         $sqlInsert->bindValue(':email', $email, \PDO::PARAM_STR);
         $sqlInsert->bindValue(':user', trim($this->data['user']), \PDO::PARAM_STR);
         $sqlInsert->bindValue(':password', $encriptPassword, \PDO::PARAM_STR);

@@ -14,7 +14,7 @@ class UploadImage
     public static function uploadUserImage(array $dataImage): string|bool
     {
         // Create directory if not exists with user id
-        $path = $_SERVER['DOCUMENT_ROOT'] . PATH_USER_IMAGE . $dataImage['id'] . "/";
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/" . PATH_USER_IMAGE . $dataImage['id'] . "/";
         if (! file_exists($path) && ! is_dir($path)) {
             mkdir($path, 0755, true);
         }

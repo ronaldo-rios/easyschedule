@@ -16,6 +16,6 @@ abstract class Config
         define('PASSWORD', $_ENV['MYSQL_PASSWORD']);
         define('DB_NAME', $_ENV['MYSQL_DATABASE']);
         define('PORT', $_ENV['MYSQL_PORT']);
-        define('PATH_USER_IMAGE', '/app/adms/assets/image/users/');
+        define('PATH_USER_IMAGE', 'app/adms/assets/image/users/');
     }
 }

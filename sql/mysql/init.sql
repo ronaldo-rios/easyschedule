@@ -36,7 +36,8 @@ CREATE TABLE `users_situation`(
     `updated_at` TIMESTAMP NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_user_situation_with_color_id`
-    FOREIGN KEY (`color_id`) REFERENCES `colors`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`color_id`) REFERENCES `colors`(`id`) 
+    ON DELETE RESTRICT ON UPDATE CASCADE
 )ENGINE=InnoDB;
 
 CREATE TABLE `users` (
@@ -54,7 +55,8 @@ CREATE TABLE `users` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_users_with_user_situation_id`
-  FOREIGN KEY (`user_situation_id`) REFERENCES `users_situation`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (`user_situation_id`) REFERENCES `users_situation`(`id`) 
+  ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 INSERT INTO `colors`(color_name, color, created_at) VALUES('Azul', '#0275D8', NOW());

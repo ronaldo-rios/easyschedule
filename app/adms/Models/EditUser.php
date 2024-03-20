@@ -6,6 +6,7 @@ use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\UploadImage;
 use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
+use App\adms\Models\helpers\ConvertToCapitularString;
 
 class EditUser
 {
@@ -48,7 +49,7 @@ class EditUser
                     return;
                 }
 
-                $this->data['image'] = !empty($_FILES['image']) ? $_FILES['image'] : null;
+                $this->data['image'] = !empty($_FILES['image']['name']) ? $_FILES['image'] : null;
                 $this->encriptPassword = password_hash($this->data['password'], PASSWORD_BCRYPT);
                 $this->data['email'] = trim(filter_var($this->data['email'], FILTER_VALIDATE_EMAIL));
 
@@ -158,7 +159,7 @@ class EditUser
                         WHERE `id` = :id";
 
         $stmt = $this->conn->prepare($update);
-        $stmt->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
+        $stmt->bindValue(':name', ConvertToCapitularString::format($this->data['name']), \PDO::PARAM_STR);
         $stmt->bindValue(':email', $this->data['email'], \PDO::PARAM_STR);
         $stmt->bindValue(':password', $this->encriptPassword, \PDO::PARAM_STR);
         $stmt->bindValue(':user', $this->data['user'], \PDO::PARAM_STR);

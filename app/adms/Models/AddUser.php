@@ -8,6 +8,7 @@ use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\UploadImage;
 use App\adms\Models\helpers\ValidatePassword;
 use App\adms\Models\helpers\ValidateEmptyField;
+use App\adms\Models\helpers\ConvertToCapitularString;
 
 class AddUser
 {
@@ -129,7 +130,7 @@ class AddUser
             )";
 
         $sqlInsert = $this->conn->prepare($insert);
-        $sqlInsert->bindValue(':name', $this->data['name'], \PDO::PARAM_STR);
+        $sqlInsert->bindValue(':name', ConvertToCapitularString::format($this->data['name']), \PDO::PARAM_STR);
         $sqlInsert->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $sqlInsert->bindValue(':email', $email, \PDO::PARAM_STR);
         $sqlInsert->bindValue(':user', trim($this->data['user']), \PDO::PARAM_STR);

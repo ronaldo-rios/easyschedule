@@ -156,3 +156,34 @@ if (formEditUser) {
     })
 
 }
+
+function inputFileValImg() {
+    var image = document.querySelector("#image");
+
+    var filePath = image.value;
+
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+        image.value = '';
+        document.getElementById("msg").innerHTML = "<p style='color: #f00;'>Erro: Necessário selecionar uma imagem JPG ou PNG!</p>";
+        return;
+    } else {
+        previewImage(image);
+        document.getElementById("msg").innerHTML = "<p></p>";
+        return;
+    }
+}
+
+
+function previewImage(image) {
+    if ((image.files) && (image.files[0])) {
+   
+        var reader = new FileReader();
+    
+        reader.onload = function(e) {
+            document.getElementById('preview-img').innerHTML = "<img src='" + e.target.result + "' alt='Imagem' style='width: 100px;'>";
+        }
+    }
+    reader.readAsDataURL(image.files[0]);
+}

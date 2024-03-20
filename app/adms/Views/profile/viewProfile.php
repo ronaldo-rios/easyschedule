@@ -19,7 +19,7 @@ if(isset($this->data['profile'])) {
 
     foreach ($infoProfile as $label => $key) {
         $value = isset($this->data['profile'][$key]) ? $this->data['profile'][$key] : null;
-        
+
         if ($key === 'image') {
             
             $userIdAndImage = $_SESSION['user_id'] . "/". $value;
@@ -30,7 +30,9 @@ if(isset($this->data['profile'])) {
             echo "<img style='width:10em; height:9em;' src='". $imageSrc . "' alt='{$this->data['profile']['name']}'><br>";
         } 
         else {
-            echo "<span>{$label}: {$value}</span><br>";
+            if($value !== null) {
+                echo "<span>{$label}: {$value}</span><br>";
+            }
         }
         
     }

@@ -6,19 +6,22 @@ class ConvertToCapitularString
 {
     public static function format(string $str): string
     {
-        $palavrasExcecoes = array_flip(["Da", "De", "Do", "Das", "Dos"]);
+        $wordExceptions = array_flip(["da", "de", "do", "das", "dos"]);
+        $words = explode(' ', $str);
 
-        $palavras = explode(" ", $str);
-
-        foreach ($palavras as &$palavra) {
-            $palavra = mb_convert_case(mb_strtolower($palavra, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
-            /** Convert to lowercase and check if the word is in the exception list */
-            $palavra = isset($palavrasExcecoes[$palavra]) ? mb_strtolower($palavra, 'UTF-8') : $palavra;
+        foreach ($words as $index => $palavra) {
+            // Convert the word to lowercase
+            $wordLower = strtolower($palavra);
+            // Verify if the word is not an exception
+            if (!isset($wordExceptions[$wordLower])) {
+                // Force the first letter of the word to be uppercase
+                $words[$index] = mb_strtoupper(mb_substr($palavra, 0, 1)) . mb_strtolower(mb_substr($palavra, 1));
+            } else {
+                // Convert the word to lowercase if it is an exception
+                $words[$index] = $wordLower;
+            }
         }
-
-        $stringFormatada = implode(" ", $palavras);
-        $stringFormatada = strtr($stringFormatada, $palavrasExcecoes);
-
-        return $stringFormatada;
+        // Join the words into a string
+        return implode(' ', $words);
     }
 }

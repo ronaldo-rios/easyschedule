@@ -48,7 +48,9 @@ if(isset($this->data['viewUser'])) {
             </span></span><br>";
         }
         else {
-            echo "<span>{$label}: {$value}</span><br>";
+            if($value !== null) {
+                echo "<span>{$label}: {$value}</span><br>";
+            }
         }
         
     }
