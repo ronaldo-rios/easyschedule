@@ -6,10 +6,10 @@ use App\adms\Models\DeleteUser as ModelsDeleteUser;
 
 class DeleteUser
 {
-    public function index(int $id): void
+    public function index(int|string $id): void
     {
-        if (!empty($id)) {
-            $userId = (int) $id;
+        $userId = (int) $id;
+        if (!empty($userId)) {
             $deleteUser = new ModelsDeleteUser();
             $deleteUser->delete($userId);
             

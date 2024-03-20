@@ -56,5 +56,6 @@ if(isset($this->data['viewUser'])) {
     }
 
     echo "<br><a href='". URL . "edit-user/index/{$this->data['viewUser']['id']}'>Editar</a><br>";
-    echo "<a href='". URL . "delete-user/index/{$this->data['viewUser']['id']}'>Excluir</a><br><br>";
+    echo "<a href='". URL . "delete-user/index/{$this->data['viewUser']['id']}' 
+        onclick='return confirm(\"Tem certeza que deseja excluir este usuário?\");'>Excluir</a><br><br>";
 }
