@@ -11,6 +11,8 @@
 <form action="" method="POST" id="form-editemailservers">
     <input type="hidden" name="id" value="<?= $this->data['editEmailServer']['id'] ?>">
 
+    <label for="title">Título do E-mail</label><br>
+    <input type="text" id="title" name="title" placeholder="Digite o título do e-mail" value="<?=$this->data['editEmailServer']['title'];?>" required><br><br>
     <label for="name">Nome</label><br>
     <input type="text" id="name" name="name" placeholder="Digite o nome do servidor de e-mail" value="<?=$this->data['editEmailServer']['name'];?>" required><br><br>
     <label for="port">Porta</label><br>

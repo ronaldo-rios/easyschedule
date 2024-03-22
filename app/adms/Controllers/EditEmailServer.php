@@ -13,7 +13,7 @@ class EditEmailServer
     {
         $formData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        if(! empty($id) && empty($formData['sendEditUser'])) {
+        if(! empty($id) && empty($formData['sendEditEmailServers'])) {
             $id = (int) $id;
             $emailServer = new ModelsEditEmailServers();
             $details = $emailServer->viewInfoEmailServer($id);
@@ -28,7 +28,7 @@ class EditEmailServer
             }
         }
         else {
-            echo "Edit email server";
+            $this->editEmailServer($formData);
         }
 
     }
@@ -37,5 +37,26 @@ class EditEmailServer
     {
         $view = new ConfigView("adms/Views/emailservers/editEmailServer", $this->data);
         $view->loadView();
+    }
+
+    private function editEmailServer(?array $formData): void
+    {
+        if (! empty($formData['sendEditEmailServers'])) {
+            $emailServer = new ModelsEditEmailServers();
+            $emailServer->edit($formData);
+
+            if ($emailServer->getResult()) {
+                header("Location: view-email-server/index");exit;
+            }
+            else {
+                $this->data['editEmailServer'] = $formData;
+                $this->viewEditEmailServer();
+            }
+        }
+        else {
+            $_SESSION['msg'] = "<div class='alert alert-danger'>Email server não encontrado!</div>";
+            $urlRedirect = URL . "view-email-servers/index";
+            header("Location: $urlRedirect");
+        }
     }
 }
