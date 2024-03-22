@@ -37,4 +37,6 @@ if(isset($this->data['profile'])) {
         
     }
 
+    echo "<br><a href='". URL . "edit-profile/index/{$_SESSION['user_id']}'>Editar</a><br>";
+
 }

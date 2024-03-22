@@ -96,6 +96,10 @@ class LoadPage
             "AddUser", 
             "DeleteUser",
             "ViewProfile",
+            "EditProfile",
+            "ViewEmailServers",
+            "EditEmailServer",
+            "AddEmailServer"
         ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {
