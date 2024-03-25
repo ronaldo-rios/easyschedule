@@ -8,14 +8,15 @@ class ViewEmailServers
 {
     private ?array $data = [];
 
-    public function index(): void
+    public function index(int|string|null $page = null): void
     {
-
+        $page = (int) $page ? $page : 1;
         $emailServers = new ModelsViewEmailServers();
-        $response = $emailServers->getEmails();
+        $response = $emailServers->getEmails($page);
        
         if ($emailServers->getResult()) {
             $this->data['emailServers'] = $response;
+            $this->data['pagination'] = $emailServers->getPagination();
             $this->viewEmailServers();
         }
         else {

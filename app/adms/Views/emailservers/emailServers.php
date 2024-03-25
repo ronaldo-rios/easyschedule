@@ -50,3 +50,5 @@ if(isset($this->data['emailServers'])) {
     }
 
 }
+
+echo $this->data['pagination'];
