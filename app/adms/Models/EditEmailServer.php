@@ -26,8 +26,8 @@ class EditEmailServer
     {
         $this->data = $formData;
         ValidateEmptyField::validateField($this->data);
-
-        if (ValidateEmptyField::getResult()) {
+        if (! ValidateEmptyField::getResult()) {
+            $this->result = false;
             return;
         }
 
@@ -42,8 +42,7 @@ class EditEmailServer
             return;
         }
 
-        $this->updateServerEmail();
-        
+        $this->updateServerEmail();  
     }
 
     private function detailsUser(int $id): array
@@ -71,13 +70,14 @@ class EditEmailServer
                        `port` = :port, `updated_at` = NOW()
                    WHERE `id` = :id";
 
+        $this->conn = Connection::connect();
         $stmt = $this->conn->prepare($update);
         $stmt->bindParam(':id', $this->data['id'], \PDO::PARAM_INT);
         $stmt->bindParam(':title', $this->data['title'], \PDO::PARAM_STR);
         $stmt->bindParam(':name', $this->data['name'], \PDO::PARAM_STR);
         $stmt->bindParam(':host', $this->data['host'], \PDO::PARAM_STR);
-        $stmt->bindParam(':user', $this->data['username'], \PDO::PARAM_STR);
-        $stmt->bindParam(':smtp', $this->data['smtp_secure'], \PDO::PARAM_STR);
+        $stmt->bindParam(':username', $this->data['username'], \PDO::PARAM_STR);
+        $stmt->bindParam(':smtp_secure', $this->data['smtp_secure'], \PDO::PARAM_STR);
         $stmt->bindParam(':password', $this->data['password'], \PDO::PARAM_STR);
         $stmt->bindParam(':port', $this->data['port'], \PDO::PARAM_INT);
         $stmt->execute();

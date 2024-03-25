@@ -13,6 +13,7 @@ if(isset($this->data['emailServers'])) {
 
     $infoProfile = [
         'Nome' => 'name',
+        'Título' => 'title',
         'Host' => 'host',
         'Porta' => 'port',
         'Usuário' => 'username',

@@ -44,9 +44,8 @@ class EditEmailServer
         if (! empty($formData['sendEditEmailServers'])) {
             $emailServer = new ModelsEditEmailServers();
             $emailServer->edit($formData);
-
             if ($emailServer->getResult()) {
-                header("Location: view-email-server/index");exit;
+                header("Location:" . URL . "view-email-servers/index");exit;
             }
             else {
                 $this->data['editEmailServer'] = $formData;
