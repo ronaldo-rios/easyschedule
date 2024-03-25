@@ -2,6 +2,8 @@
 
 echo "<H2>Servidores de Email</H2>";
 
+echo "<a href='". URL . "add-email-server/index'>Adicionar novo servidor de e-mail</a><br>";
+
 if(isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];
     unset($_SESSION['msg']);
@@ -42,7 +44,8 @@ if(isset($this->data['emailServers'])) {
             }
         }
         echo "<a href='". URL . "edit-email-server/index/{$emailServer['id']}'>Editar</a><br>";
-
+        echo "<a href='". URL . "delete-email-server/index/{$emailServer['id']}' 
+            onclick='return confirm(\"Tem certeza que deseja excluir este registro?\");'>Excluir</a><br><br>";
     }
 
 }

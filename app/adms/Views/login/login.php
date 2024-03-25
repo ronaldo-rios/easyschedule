@@ -9,8 +9,10 @@
 <span id="msg"></span>
 
 <form action="" method="POST" id="form-login">
+    <i class="fa-solid fa-circle-user fa-lg"></i>
     <label for="user">Usuário</label><br>
     <input type="text" id="user" name="user" oninput="toUpperCase(event)" placeholder="Digite o usuário" required><br><br>
+    <i class="fa-solid fa-key fa-lg"></i>
     <label for="password">Senha</label><br>
     <input type="password" id="password" name="password" placeholder="Digite a senha" required><br><br>
 

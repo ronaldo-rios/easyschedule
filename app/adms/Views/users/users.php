@@ -17,3 +17,5 @@ foreach($this->data['users'] as $user) {
         onclick='return confirm(\"Tem certeza que deseja excluir este usuário?\");'>Excluir</a><br><br>";
 
 }
+
+echo $this->data['pagination'];

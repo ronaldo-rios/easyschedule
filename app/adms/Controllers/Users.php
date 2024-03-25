@@ -9,14 +9,18 @@ class Users
 {
     private ?array $data = [];
 
-    public function index(): void
+    public function index(int|string|null $page = null): void
     {
+        $page = (int) $page ? $page : 1;
         $listUsers = new ListUsers();
-        $users = $listUsers->list();
+        $users = $listUsers->list($page);
 
-        $listUsers->getResult()
-            ? $this->data['users'] = $users
-            : $this->data['users'] = [];
+        if($listUsers->getResult()){
+            $this->data['users'] = $users;
+            $this->data['pagination'] = $listUsers->getPagination();
+        } else {
+            $this->data['users'] = [];
+        }
 
         $view = new ConfigView("adms/Views/users/users", $this->data);
         $view->loadView();

@@ -8,6 +8,11 @@ class ConfigView
     {
     }
 
+    /**
+     * Check if the file exists, and load if it exists and is logged in, 
+     * if it does not exist it displays the error message
+     * @return void
+     */
     public function loadView(): void
     {
         if(file_exists('app/' . $this->nameView . '.php')) {
@@ -23,7 +28,7 @@ class ConfigView
     }
 
     /**
-     * Pages that do not require the main.php file to be loaded
+     * Load the login page and pages that do not need logged in
      * @return void
      */ 
     public function loadViewLogin(): void

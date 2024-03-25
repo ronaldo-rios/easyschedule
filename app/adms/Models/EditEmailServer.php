@@ -65,10 +65,11 @@ class EditEmailServer
     private function updateServerEmail(): void
     {
         $update = "UPDATE `config_emails` 
-                  SET `name` = :name, `host` = :host, `username` = :username, `title` = :title, 
-                      `smtp_secure` = :smtp_secure,`password` = :password, 
-                      `port` = :port, `updated_at` = NOW()
-                  WHERE `id` = :id";
+                   SET `name` = :name, `host` = :host, 
+                       `username` = :username, `title` = :title, 
+                       `smtp_secure` = :smtp_secure,`password` = :password, 
+                       `port` = :port, `updated_at` = NOW()
+                   WHERE `id` = :id";
 
         $stmt = $this->conn->prepare($update);
         $stmt->bindParam(':id', $this->data['id'], \PDO::PARAM_INT);
