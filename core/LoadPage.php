@@ -101,6 +101,9 @@ class LoadPage
             "EditEmailServer",
             "AddEmailServer",
             "DeleteEmailServer",
+            "AddAccessLevel",
+            "EditAccessLevel",
+            "AccessLevels"
         ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {

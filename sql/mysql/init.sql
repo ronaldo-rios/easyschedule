@@ -4,6 +4,15 @@ CREATE DATABASE easy_schedule
 
 USE easy_schedule;
 
+CREATE TABLE `access_levels` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `access_level` VARCHAR(100) NOT NULL,
+    `order_level` INT NOT NULL,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
 CREATE TABLE `config_emails` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(225) NOT NULL,
@@ -51,11 +60,14 @@ CREATE TABLE `users` (
   `image` varchar(255) NULL,
   `confirm_email` VARCHAR(225) NULL,
   `user_situation_id` INT NOT NULL,
+  `access_level_id` INT NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_users_with_user_situation_id`
   FOREIGN KEY (`user_situation_id`) REFERENCES `users_situation`(`id`) 
+  ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY (`access_level_id`) REFERENCES `access_levels`(`id`)
   ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
@@ -71,6 +83,11 @@ INSERT INTO `colors`(color_name, color, created_at) VALUES('Branco', '#FFFFFF', 
 INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Confirmado', 3, NOW());
 INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Aguardando Confirmação', 5, NOW());
 INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Não Cadastrado', 4, NOW());
+
+INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Master', 1, NOW());
+INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Administrador', 2, NOW());
+INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Usuário Default', 3, NOW());
+INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Financeiro', 4, NOW());
 
 INSERT INTO `users` (`name`, `nickname`, `email`, `user`, `password`, `user_situation_id`, `created_at`)
 VALUES 
