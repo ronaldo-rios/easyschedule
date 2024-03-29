@@ -16,13 +16,10 @@ class DeleteAccessLevel
             $delete->delete($id);
             
             if ($delete->getResult()) {
+                $_SESSION['msg'] = "<div class='alert alert-success'>Nível de acesso excluído com sucesso!</div>";
                 header('Location: ' . URL . 'access-levels/index'); exit;
             }
             else {
-                $_SESSION['msg'] = 
-                "<div class='alert alert-danger'>
-                    Erro ao tentar excluir nível de acesso!
-                </div>";
                 header('Location: ' . URL . 'access-levels/index'); exit;
             }
         }

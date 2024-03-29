@@ -20,7 +20,7 @@ class DeleteUser
         $this->conn = Connection::connect();
         $user = $this->getUser($id);
 
-        if (! empty($user)) {
+        if (! empty($user) && ((int) $user['order_level'] > (int) $_SESSION['order_level'])) {
             $this->deleteUser($id);
 
             if (! empty($user['image'])) {
@@ -36,12 +36,17 @@ class DeleteUser
 
     private function getUser(int $id): array
     {
-        $query = "SELECT `id`, `image`
-                  FROM users 
-                  WHERE id = :id LIMIT 1";
+        $query = "SELECT user.id, user.image, access.order_level
+                  FROM `users` AS user
+                    INNER JOIN `access_levels` AS access
+                      ON user.access_level_id = access.id
+                  WHERE user.id = :id 
+                    AND access.order_level > :order_level
+                  LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindParam(':order_level', $_SESSION['order_level'], \PDO::PARAM_INT);
         $stmt->execute();
         return (array) $stmt->fetch(\PDO::FETCH_ASSOC);
     }

@@ -14,7 +14,8 @@ if(isset($this->data['profile'])) {
         'Nome' => 'name',
         'Email' => 'email',
         'Usuário' => 'user',
-        'Apelido' => 'nickname'
+        'Apelido' => 'nickname',
+        'Permissão de Acesso' => 'access_level'
     ];
 
     foreach ($infoProfile as $label => $key) {

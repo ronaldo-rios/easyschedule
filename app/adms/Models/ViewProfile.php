@@ -22,10 +22,12 @@ class ViewProfile
 
     private function getInfoUserLoged(): ?array
     {   
-        $query = "SELECT `name`, `email`, `user`,
-                         `image`, `nickname`
-                  FROM `users` 
-                  WHERE `id` = :id 
+        $query = "SELECT u.name, u.email, u.user,
+                         u.image, u.image, u.nickname, al.access_level 
+                  FROM `users` AS u
+                  INNER JOIN `access_levels` AS al
+                    ON u.access_level_id = al.id
+                  WHERE u.id = :id 
                   LIMIT 1";
 
         $stmt = $this->conn->prepare($query);

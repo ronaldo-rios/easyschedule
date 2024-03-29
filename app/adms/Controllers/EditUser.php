@@ -34,7 +34,8 @@ class EditUser
     private function viewEditUser(): void
     {
         $dropdownSituations = new ModelsEditUser();
-        $this->data['select'] = $dropdownSituations->listSelectSituation();
+        $this->data['select_situation'] = $dropdownSituations->listSelectSituation();
+        $this->data['select_access_level'] = $dropdownSituations->listSelectAccessLevel();
         $view = new ConfigView("adms/Views/users/editUser", $this->data);
         $view->loadView();
     }

@@ -17,7 +17,37 @@ class DeleteAccessLevel
     public function delete(int $id): void
     {
         $this->conn = Connection::connect();
-        $this->deleteAccessLevel($id);
+        $accessLevelIsNotInUse = $this->checkIfAccessLevelIsLinkedToUser($id);
+
+        if ($accessLevelIsNotInUse) {
+            $this->deleteAccessLevel($id);
+        }
+    }
+
+    /**
+     * Check if the access level is linked to a user. If it is, it is not possible to delete it.
+     * @param int $id
+     * @return void
+     */
+    private function checkIfAccessLevelIsLinkedToUser(int $id): bool
+    {
+        $select = "SELECT `id` 
+                   FROM `users` 
+                   WHERE access_level_id = :id";
+
+        $stmt = $this->conn->prepare($select);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['msg'] = "<div class='alert alert-danger'>
+                Não é possível excluir este nível de acesso, pois ele está vinculado a um ou mais usuários!
+            </div>";
+            return $this->result = false;
+        }
+        else {
+            return $this->result = true;
+        }
     }
 
     private function deleteAccessLevel(int $id): void
@@ -34,6 +64,7 @@ class DeleteAccessLevel
             $this->result = true;
         }
         else {
+            $_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao tentar excluir nível de acesso!</div>";
             $this->result = false;
         }
     }

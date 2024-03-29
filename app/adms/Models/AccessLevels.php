@@ -24,9 +24,11 @@ class AccessLevels
     {
         $query = "SELECT `id`, `access_level`, `order_level` 
                   FROM access_levels 
+                  WHERE order_level > :order_level
                   ORDER BY id ASC";
 
         $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':order_level', $_SESSION['order_level'], \PDO::PARAM_INT);
         $stmt->execute();
         $result = (array) $stmt->fetchAll();
 

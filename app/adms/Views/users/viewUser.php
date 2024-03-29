@@ -16,6 +16,7 @@ if(isset($this->data['viewUser'])) {
         'Usuário' => 'user',
         'Apelido' => 'nickname',
         'Situação' => 'situation',
+        'Nível de Permissão' => 'access_level',
         'Criado em' => 'created_at',
         'Última atualização' => 'updated_at'
     ];

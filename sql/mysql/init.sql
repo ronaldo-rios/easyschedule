@@ -67,6 +67,7 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_with_user_situation_id`
   FOREIGN KEY (`user_situation_id`) REFERENCES `users_situation`(`id`) 
   ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `fk_users_with_access_level_id`
   FOREIGN KEY (`access_level_id`) REFERENCES `access_levels`(`id`)
   ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;

@@ -2,6 +2,7 @@
 
 namespace App\adms\Models;
 
+use App\adms\Enum\AccessLevels;
 use App\adms\Enum\ConfigEmails;
 use App\adms\Enum\UserSituation;
 use App\adms\Models\helpers\Connection;
@@ -107,9 +108,9 @@ class AdmsNewUser
     private function insertUser($email,$encriptPassword, $confirmEmail, $situation): string
     {
         $insert = "INSERT INTO `users` 
-            (`name`, `email`, `user`, `password`, `confirm_email`, `user_situation_id`, `created_at`) 
+            (`name`, `email`, `user`, `password`, `confirm_email`, `user_situation_id`, `access_level_id`, `created_at`) 
             VALUES 
-            (:name, LOWER(:email), UPPER(:user), :password, :confirm_email, :user_situation, NOW())";
+            (:name, LOWER(:email), UPPER(:user), :password, :confirm_email, :user_situation, :access_level_id, NOW())";
 
         $sqlInsert = $this->conn->prepare($insert);
         $sqlInsert->bindValue(':name', ConvertToCapitularString::format($this->data['name']), \PDO::PARAM_STR);
@@ -117,6 +118,7 @@ class AdmsNewUser
         $sqlInsert->bindValue(':user', trim($this->data['user']), \PDO::PARAM_STR);
         $sqlInsert->bindValue(':password', $encriptPassword, \PDO::PARAM_STR);
         $sqlInsert->bindValue(':confirm_email', $confirmEmail, \PDO::PARAM_STR);
+        $sqlInsert->bindValue(':access_level_id', AccessLevels::USER_DEFAULT->value, \PDO::PARAM_INT);
         $sqlInsert->bindValue(':user_situation', $situation, \PDO::PARAM_INT);
         return $sqlInsert->execute();
     }

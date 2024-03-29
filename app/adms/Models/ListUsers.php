@@ -38,6 +38,7 @@ class ListUsers
         $stmt = $this->conn->prepare($users);
         $stmt->bindValue(':confirmed', UserSituation::CONFIRMED_EMAIL->value, PDO::PARAM_INT);
         $stmt->bindValue(':pending', UserSituation::WAITING_FOR_CONFIRMATION->value, PDO::PARAM_INT);
+        $stmt->bindValue(':order_level', $_SESSION['order_level'], PDO::PARAM_INT);
         $stmt->bindValue(':limit', self::LIMIT, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $pagination->getOffset(), PDO::PARAM_INT);
 
@@ -56,23 +57,31 @@ class ListUsers
 
     private function queryAllUsers(): string
     {
-        return "SELECT `id`, `name`, `email`, `user` 
-                FROM users 
+        return "SELECT 
+                    user.id, user.name, user.email, user.user
+                FROM `users` AS user
+                INNER JOIN `access_levels` AS access
+                    ON user.access_level_id = access.id
                 WHERE `user_situation_id` in (:confirmed, :pending)
-                ORDER BY `name` ASC
+                    AND access.order_level > :order_level
+                ORDER BY user.id ASC
                 LIMIT :limit OFFSET :offset";
     }
 
     private function countUsers(): int
     {
-        $sql = "SELECT COUNT(id) AS num_result 
-                    FROM `users` 
-                    WHERE `user_situation_id` IN (:confirmed, :pending)";
+        $sql = "SELECT COUNT(u.id) AS num_result 
+                    FROM `users` AS u
+                    INNER JOIN `access_levels` AS access
+                        ON u.access_level_id = access.id
+                    WHERE u.user_situation_id IN (:confirmed, :pending)
+                    AND access.order_level > :order_level";
 
         $this->conn = Connection::connect();
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':confirmed', UserSituation::CONFIRMED_EMAIL->value, PDO::PARAM_INT);
         $stmt->bindValue(':pending', UserSituation::WAITING_FOR_CONFIRMATION->value, PDO::PARAM_INT);
+        $stmt->bindValue(':order_level', $_SESSION['order_level'], PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {

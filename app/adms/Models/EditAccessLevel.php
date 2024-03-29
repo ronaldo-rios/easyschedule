@@ -3,6 +3,7 @@
 namespace App\adms\Models;
 
 use App\adms\Models\helpers\Connection;
+use App\adms\Models\helpers\ConvertToCapitularString;
 use App\adms\Models\helpers\ValidateEmptyField;
 
 class EditAccessLevel
@@ -37,10 +38,13 @@ class EditAccessLevel
 
     private function detailsLevel(int $id): array
     {
-        $query = "SELECT * FROM `access_levels` WHERE id = :id LIMIT 1";
+        $query = "SELECT * FROM `access_levels` 
+                  WHERE id = :id AND order_level > :order_level
+                  LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindParam(':order_level', $_SESSION['order_level'], \PDO::PARAM_INT);
         $stmt->execute();
         $finalResult = (array) $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -60,7 +64,7 @@ class EditAccessLevel
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $formData['id'], \PDO::PARAM_INT);
-        $stmt->bindParam(':access_level', $formData['name'], \PDO::PARAM_STR);
+        $stmt->bindParam(':access_level', ConvertToCapitularString::format($formData['name']), \PDO::PARAM_STR);
         $stmt->execute();
 
         if ($stmt->rowCount()) {

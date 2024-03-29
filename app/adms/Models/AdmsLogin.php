@@ -38,8 +38,14 @@ class AdmsLogin
 
     private function validateUser(): string
     {
-        return "SELECT `id`, `name`, `nickname`, `email`, `password`, `image`, `user_situation_id` 
-                FROM `users` 
+        return "SELECT 
+                user.id, user.name, user.nickname,
+                user.email, user.password, user.image,
+                user.user_situation_id, user.access_level_id, 
+                access.order_level
+                FROM `users` AS user
+                INNER JOIN `access_levels` AS access
+                    ON user.access_level_id = access.id
                     WHERE UPPER(`user`) = UPPER(:user)
                     LIMIT 1";
     }
@@ -47,12 +53,14 @@ class AdmsLogin
     private function validatePassword(?array $resultUser): void
     {
         if (password_verify($this->data['password'], $resultUser['password'])) {
-            $_SESSION['user_id'] = $resultUser['id'];
-            $_SESSION['user_name'] = $resultUser['name'];
-            $_SESSION['user_nickname'] = $resultUser['nickname'];
-            $_SESSION['user_email'] = $resultUser['email'];
-            $_SESSION['user_image'] = $resultUser['image'];
-            $_SESSION['user_situation_id'] = $resultUser['user_situation_id'];
+            $_SESSION['user_id']            = $resultUser['id'];
+            $_SESSION['user_name']          = $resultUser['name'];
+            $_SESSION['user_nickname']      = $resultUser['nickname'];
+            $_SESSION['user_email']         = $resultUser['email'];
+            $_SESSION['user_image']         = $resultUser['image'];
+            $_SESSION['user_situation_id']  = $resultUser['user_situation_id'];
+            $_SESSION['access_level']       = $resultUser['access_level_id'];
+            $_SESSION['order_level']        = $resultUser['order_level'];
             $this->result = true;
         }
         else {

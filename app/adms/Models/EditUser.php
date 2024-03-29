@@ -76,16 +76,34 @@ class EditUser
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function listSelectAccessLevel(): ?array
+    {
+        $this->conn = Connection::connect();
+        $sql = "SELECT `id`, `access_level` 
+                FROM `access_levels`
+                WHERE `order_level` > :order_level
+                ORDER BY `order_level` ASC";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':order_level', $_SESSION['order_level'], \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     private function detailsUser(int $id): ?array
     {
-        $queryUser = "SELECT `id`, `name`, `email`, `password`,
-                             `user`, `image`, `nickname`, `user_situation_id`, `updated_at`
-                      FROM `users`
-                      WHERE `id` = :id
+        $queryUser = "SELECT u.id, u.name, u.email, u.password,
+                             u.user, u.image, u.nickname, 
+                             u.access_level_id, u.user_situation_id, u.updated_at
+                      FROM `users` AS u
+                        INNER JOIN `access_levels` AS al
+                            ON u.access_level_id = al.id
+                      WHERE u.id = :id AND al.order_level > :order_level
                       LIMIT 1";
 
         $stmt = $this->conn->prepare($queryUser);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':order_level', $_SESSION['order_level'], \PDO::PARAM_INT);
         $stmt->execute();
         $dataResult = (array) $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -153,7 +171,7 @@ class EditUser
      
         $update = "UPDATE `users`
                         SET `name` = :name, `email` = :email, `password` = :password,
-                            `user` = :user, `nickname` = :nickname,
+                            `user` = :user, `nickname` = :nickname, `access_level_id` = :access_level_id,
                             `image` = :image, `user_situation_id` = :user_situation_id, 
                             `updated_at` = NOW()
                         WHERE `id` = :id";
@@ -166,6 +184,7 @@ class EditUser
         $stmt->bindValue(':nickname', $this->data['nickname'], \PDO::PARAM_STR);
         $stmt->bindValue(':image', $this->data['image'], \PDO::PARAM_STR);
         $stmt->bindValue(':user_situation_id', $this->data['user_situation_id'], \PDO::PARAM_INT);
+        $stmt->bindValue(':access_level_id', $this->data['access_level_id'], \PDO::PARAM_INT);
         $stmt->bindValue(':id', $this->data['id'], \PDO::PARAM_INT);
         $stmt->execute();
 

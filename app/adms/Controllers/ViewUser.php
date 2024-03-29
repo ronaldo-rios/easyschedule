@@ -15,11 +15,11 @@ class ViewUser
             $idUser = (int) $id;
             $user = new ModelsViewUser();
             $userDetails = $user->viewInfo($idUser);
-           
             if ($user->getResult()) {
                 $this->data['viewUser'] = $userDetails;
                 $this->viewUserDetails();
             } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'>Usuário não encontrado!</div>";
                 header("Location: " . URL . "users/index");
                 exit;
             }
