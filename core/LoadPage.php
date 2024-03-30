@@ -104,7 +104,17 @@ class LoadPage
             "AddAccessLevel",
             "EditAccessLevel",
             "AccessLevels",
-            "DeleteAccessLevel"
+            "DeleteAccessLevel",
+            "PageGroups",
+            "EditPageGroup",
+            "AddPageGroup",
+            "ViewPageGroup",
+            "PageModules",
+            "EditPageModule",
+            "AddPageModule",
+            "Pages",
+            "EditPage",
+            "AddPage",
         ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {
