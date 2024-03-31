@@ -6,7 +6,7 @@ use PDO;
 use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\Pagination;
 
-class ListPageModules
+class ListPages
 {
     private object $conn; 
     private bool $result = false;
@@ -23,25 +23,38 @@ class ListPageModules
         return $this->dataPagination;
     }
 
-    public function list(int $page): array
+    public function list(?int $page = null): array
     {
-        $pagination = new Pagination(URL . 'page-modules/index');
+        $pagination = new Pagination(URL . 'pages/index');
         $pagination->condiction($page, self::LIMIT);
-        $countConfEmails = $this->countPageModules();
+        $countConfEmails = $this->countPages();
         $pagination->paginate($countConfEmails);
         $resultPage = $pagination->getResult();
         $this->dataPagination = $resultPage;
         
         $this->conn = Connection::connect();
-        return $this->queryPageModules($pagination);
+        return $this->queryPages($pagination);
     }
 
-    private function queryPageModules(Pagination $pagination): array
+    private function queryPages(Pagination $pagination): array
     {
-        $query = "SELECT `id`, UPPER(`type`) AS `type`, `name`, `order_module`
-                    FROM `page_modules`
-                  ORDER BY `type`, `name`
-                  LIMIT :limit OFFSET :offset";
+        $query = "SELECT 
+                        pg.id, 
+                        pg.name_page,
+                        UPPER(pm.type) AS module_type, 
+                        pm.name AS module_name,
+                        ps.status,
+                        c.color_name
+                    FROM `pages` AS pg
+                      INNER JOIN `page_modules` AS pm
+                        ON pg.page_module_id = pm.id
+                      INNER JOIN `page_status` AS ps
+                        ON pg.page_status_id = ps.id
+                      INNER JOIN `colors` AS c
+                        ON ps.color_id = c.id
+                   ORDER BY `type`, `name`
+                   LIMIT :limit OFFSET :offset";
+                
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':limit', self::LIMIT, PDO::PARAM_INT);
@@ -58,9 +71,9 @@ class ListPageModules
         }
     }
 
-    private function countPageModules(): int
+    private function countPages(): int
     {
-        $query = "SELECT COUNT(id) AS count FROM `page_modules`";
+        $query = "SELECT COUNT(id) AS count FROM `pages`";
 
         $this->conn = Connection::connect();
         $stmt = $this->conn->prepare($query);

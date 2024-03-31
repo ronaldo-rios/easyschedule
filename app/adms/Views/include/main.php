@@ -5,4 +5,5 @@
 <a href="<?= URL . 'access-levels/index';?>">Níveis de Acesso</a><br>
 <a href="<?= URL . 'page-groups/index';?>">Grupos de Páginas</a><br>
 <a href="<?= URL . 'page-modules/index';?>">Módulos</a><br>
+<a href="<?= URL . 'pages/index';?>">Páginas</a><br>
 <a href="<?= URL . 'logout/index';?>">Sair</a><br><br>

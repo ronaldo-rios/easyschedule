@@ -13,10 +13,10 @@ class PageModules
     {
         $page = (int) $page ? $page : 1;
         $modules = new ModelsListPageModules();
-        $users = $modules->list($page);
+        $listModules = $modules->list($page);
 
         if($modules->getResult()){
-            $this->data['modules'] = $users;
+            $this->data['modules'] = $listModules;
             $this->data['pagination'] = $modules->getPagination();
         } else {
             $this->data['modules'] = [];
