@@ -112,9 +112,11 @@ class LoadPage
             "PageModules",
             "EditPageModule",
             "AddPageModule",
+            "ViewPageModule",
             "Pages",
             "EditPage",
             "AddPage",
+            "ViewPage",
         ];
 
         if(in_array(self::$urlController, self::$listPrivatePage)) {

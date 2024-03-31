@@ -1,8 +1,8 @@
 <?php
 
-echo "<h2>Grupos de Páginas</h2>";
+echo "<h2>Módulos de Páginas</h2>";
 
-echo "<a href='". URL . "add-page-group/index'>Adicionar novo grupo</a><br><br>";
+echo "<a href='". URL . "add-page-module/index'>Adicionar novo módulo</a><br><br>";
 
 if (isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];
