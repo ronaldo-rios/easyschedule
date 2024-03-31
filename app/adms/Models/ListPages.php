@@ -43,16 +43,13 @@ class ListPages
                         pg.name_page,
                         UPPER(pm.type) AS module_type, 
                         pm.name AS module_name,
-                        ps.status,
-                        c.color_name
+                        ps.status
                     FROM `pages` AS pg
                       INNER JOIN `page_modules` AS pm
                         ON pg.page_module_id = pm.id
                       INNER JOIN `page_status` AS ps
                         ON pg.page_status_id = ps.id
-                      INNER JOIN `colors` AS c
-                        ON ps.color_id = c.id
-                   ORDER BY `type`, `name`
+                   ORDER BY `name_page` ASC
                    LIMIT :limit OFFSET :offset";
                 
 
