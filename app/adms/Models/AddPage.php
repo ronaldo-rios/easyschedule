@@ -47,7 +47,7 @@ class AddPage
         $controller = iconv('UTF-8', 'ASCII//TRANSLIT', trim($formData['controller']));
         $obs = !empty($formData['obs']) ? ucfirst(mb_strtolower($formData['obs'])) : null;
         $icon = !empty($formData['icon']) ? $formData['icon'] : null;
-        /* icon function to Trying to remove special characters and replace 
+        /* icon function to trying to remove special characters and replace 
         them with a compatible ASCII value and force all text to be lowercase */
         $method = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $formData['method']));
         $controllerMain = strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', trim($formData['controllermenu'])));

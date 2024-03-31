@@ -3,6 +3,7 @@
 namespace Core;
 
 use App\adms\Models\helpers\SlugControllerOrMethod;
+use Core\PrivatePages;
 
 class LoadPage
 {
@@ -11,7 +12,6 @@ class LoadPage
     private static string $urlParameter;
     private static string $classLoad;
     private static array $listPublicPage;
-    private static array $listPrivatePage;
 
     /**
      * This method is responsible for loading and redirecting the user to the requested page or to the default page:
@@ -88,38 +88,9 @@ class LoadPage
     private static function privatePage(): void
     {
         // List of private pages:
-        self::$listPrivatePage = [
-            "Dashboard", 
-            "Users", 
-            "ViewUser", 
-            "EditUser", 
-            "AddUser", 
-            "DeleteUser",
-            "ViewProfile",
-            "EditProfile",
-            "ViewEmailServers",
-            "EditEmailServer",
-            "AddEmailServer",
-            "DeleteEmailServer",
-            "AddAccessLevel",
-            "EditAccessLevel",
-            "AccessLevels",
-            "DeleteAccessLevel",
-            "PageGroups",
-            "EditPageGroup",
-            "AddPageGroup",
-            "ViewPageGroup",
-            "PageModules",
-            "EditPageModule",
-            "AddPageModule",
-            "ViewPageModule",
-            "Pages",
-            "EditPage",
-            "AddPage",
-            "ViewPage",
-        ];
+        $listPrivatePage = PrivatePages::callPrivatePages();
 
-        if(in_array(self::$urlController, self::$listPrivatePage)) {
+        if(in_array(self::$urlController, $listPrivatePage)) {
             self::verifyLoged();
         }
         else {
