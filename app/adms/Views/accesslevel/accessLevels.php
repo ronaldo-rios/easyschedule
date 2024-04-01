@@ -2,7 +2,8 @@
 
 echo "<h2>Níveis de Acesso</h2>";
 
-echo "<a href='". URL . "add-access-level/index'>Adicionar novo nível de acesso</a><br><br>";
+echo "<a href='". URL . "add-access-level/index'>Adicionar novo nível de acesso</a><br>";
+echo "<a href='". URL . "sync-page-levels/index'>Sincronizar</a><br><br>";
 
 if (isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];
