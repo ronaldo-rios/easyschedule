@@ -25,6 +25,7 @@ class Permissions
             $this->data['pagination'] = null;
         }
 
+        $this->data['page'] = $page;
         $view = new ConfigView('adms/Views/permissions/permissions', $this->data);
         $view->loadView();
     }

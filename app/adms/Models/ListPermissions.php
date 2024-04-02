@@ -48,12 +48,13 @@ class ListPermissions
         $permissions = "SELECT 
                             pl.id, 
                             CASE pl.permission
-                                WHEN 1 THEN 'Sim'
-                                ELSE 'Não'
+                                WHEN 1 THEN 'Liberado'
+                                ELSE 'Bloqueado'
                             END AS permission,
                             pl.order_level_page, 
                             pl.page_id,
                             p.name_page, 
+                            pl.access_level_id,
                             al.access_level
                         FROM `page_levels` AS pl
                             INNER JOIN `pages` AS p

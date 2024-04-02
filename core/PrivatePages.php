@@ -36,6 +36,7 @@ class PrivatePages
             "AddPage",
             "ViewPage",
             "Permissions",
+            "EditPermission",
             "SyncPageLevels",
         ];
     }
