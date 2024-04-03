@@ -111,7 +111,9 @@ class LoadPage
         if (
             isset($_SESSION['user_id']) &&
             isset($_SESSION['user_name']) && 
-            isset($_SESSION['user_email'])
+            isset($_SESSION['user_email']) &&
+            isset($_SESSION['access_level']) &&
+            isset($_SESSION['order_level'])
         ) {
             self::$classLoad = "\\App\\adms\\Controllers\\" . self::$urlController;
         }

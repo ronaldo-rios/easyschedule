@@ -2,7 +2,9 @@
 
 echo "<h2>Usuários</h2>";
 
-echo "<a href='". URL . "add-user/index'>Adicionar novo usuário</a><br><br>";
+if ($this->data['buttonpermissions']['add_user']) {
+    echo "<a href='". URL . "add-user/index'>Adicionar novo usuário</a><br><br>";
+}
 
 if (isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];

@@ -3,6 +3,7 @@
 namespace Core;
 
 use Core\Config;
+use Core\LoadPageLevels;
 use App\adms\Models\helpers\SlugControllerOrMethod;
 
 class ConfigController extends Config
@@ -45,7 +46,7 @@ class ConfigController extends Config
 
     public function loadPage(): void
     {
-        LoadPage::load($this->urlController, $this->urlMethod, $this->urlParameter);
+        LoadPageLevels::load($this->urlController, $this->urlMethod, $this->urlParameter);
     }
 
     /**

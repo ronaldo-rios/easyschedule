@@ -2,8 +2,6 @@
 
 echo "<h2>Permissões</h2>";
 
-echo "<a href='". URL . "add-user/index'>Adicionar nova permissão</a><br><br>";
-
 if (isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];
     unset($_SESSION['msg']);

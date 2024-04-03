@@ -149,43 +149,71 @@ CREATE TABLE `page_levels`(
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Azul', '#0275D8', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Cinza', '#868E95', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Verde', '#5CB85C', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Vermelho', '#D9534F', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Laranja', '#F0AD4E', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Azul Claro', '#17A2B8', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Cinza Claro', '#343140', NOW());
-INSERT INTO `colors`(color_name, color, created_at) VALUES('Branco', '#FFFFFF', NOW());
+INSERT INTO `colors`(color_name, color, created_at) 
+VALUES
+    ('Azul', '#0275D8', NOW()),
+    ('Cinza', '#868E95', NOW()),
+    ('Verde', '#5CB85C', NOW()),
+    ('Vermelho', '#D9534F', NOW()),
+    ('Laranja', '#F0AD4E', NOW()),
+    ('Azul Claro', '#17A2B8', NOW()),
+    ('Cinza Claro', '#343140', NOW()),
+    ('Branco', '#FFFFFF', NOW());
 
-INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Confirmado', 3, NOW());
-INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Aguardando Confirmação', 5, NOW());
-INSERT INTO `users_situation`(situation_name, color_id, created_at) VALUES('Não Cadastrado', 4, NOW());
+INSERT INTO `users_situation`(situation_name, color_id, created_at) 
+VALUES('Confirmado', 3, NOW()), ('Aguardando Confirmação', 5, NOW()), ('Não Cadastrado', 4, NOW());
 
-INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Master', 1, NOW());
-INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Administrador', 2, NOW());
-INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Usuário Default', 3, NOW());
-INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) VALUES('Financeiro', 4, NOW());
+INSERT INTO `access_levels`(`access_level`, `order_level`, `created_at`) 
+VALUES('Master', 1, NOW()),('Administrador', 2, NOW()),('Usuário Default', 3, NOW()),('Financeiro', 4, NOW());
 
-INSERT INTO `page_status`(status, color_id, created_at) VALUES('Ativo', 3, NOW());
-INSERT INTO `page_status`(status, color_id, created_at) VALUES('Inativo', 4, NOW());
+INSERT INTO `page_status`(status, color_id, created_at) 
+VALUES ('Ativo', 3, NOW()),('Inativo', 4, NOW());
 
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Listar', 1, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Visualizar', 2, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Cadastrar', 3, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Editar', 4, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Excluir', 5, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Acesso', 6, NOW());
-INSERT INTO `page_groups`(group_name, order_page_group, created_at) VALUES('Outros', 7, NOW());
+INSERT INTO `page_groups`(group_name, order_page_group, created_at) 
+VALUES
+    ('Listar', 1, NOW()),
+    ('Visualizar', 2, NOW()),
+    ('Cadastrar', 3, NOW()),
+    ('Editar', 4, NOW()),
+    ('Excluir', 5, NOW()),
+    ('Acesso', 6, NOW()),
+    ('Outros', 7, NOW());
 
-INSERT INTO `page_modules`(type, name, order_module, obs, created_at) VALUES('adms', 'Administrativo', 1, 'Administração e configurações de Usuários', NOW());
-INSERT INTO `page_modules`(type, name, order_module, obs, created_at) VALUES('sche', 'Agendamentos', 2, 'Administração de agendamentos', NOW());
-INSERT INTO `page_modules`(type, name, order_module, obs, created_at) VALUES('finc', 'Financeiro', 3, 'Administração de finanças', NOW());
+INSERT INTO `page_modules`(type, name, order_module, obs, created_at) 
+VALUES
+    ('adms', 'Administrativo', 1, 'Administração e configurações de Usuários', NOW()),
+    ('sche', 'Agendamentos', 2, 'Administração de agendamentos', NOW()),
+    ('finc', 'Financeiro', 3, 'Administração de finanças', NOW());
 
 INSERT INTO `users` 
 (`name`, `nickname`, `email`, `user`, `password`, `user_situation_id`, `access_level_id`, `created_at`)
 VALUES -- Senha do usuário padrão sem o hash: Secret123
 ('User to Test', 'USERTOTEST', 'suporte@teste.com', 'USERTEST' , '$2y$10$XF23pikBWucg6xf.8RJJFebMm/2uWKLUXS6V2vaJXrhsJDA0a0nS2', 1, 1, NOW());
+
+INSERT INTO `pages`
+    (controller, method, controller_in_the_main, method_in_the_main, name_page, public, page_status_id, page_group_id, page_module_id, created_at)
+VALUES
+    ('Login', 'index', 'login', 'index', 'Login', 1, 1, 6, 1, NOW()),
+    ('NewUser', 'index', 'new-user', 'index', 'Cadastro' 1, 1, 6, 1, NOW()),
+    ('Logout', 'index', 'logout', 'index', 'Logout',1, 1, 6, 1, NOW()),
+    ('Error', 'index', 'error', 'index', 'Página de erro', 1, 1, 6, 1, NOW()),
+    ('ConfirmEmail', 'index', 'confirm-email', 'index', 'Confirmação de Email', 1, 1, 6, 1, NOW()),
+    ('NewConfirmEmail', 'index', 'new-confirm-email', 'index', 'Nova Confirmação de Email', 1, 1, 6, 1, NOW()),
+    ('RecoverPassword', 'index', 'recover-password', 'index', 'Esqueci Minha Senha', 1, 1, 6, 1, NOW()),
+    ('UpdatePassword', 'index', 'update-password', 'index', 'Atualizar Senha', 1, 1, 6, 1, NOW()),
+    ('Permissions', 'index', 'permissions', 'index','Permissões de Acesso', 0, 1, 6, 1, NOW()),
+    ('Dashboard', 'index', 'dashboard', 'index', 'Dashboard', 0, 1, 7, 1, NOW()),
+    ('SyncPageLevels', 'index', 'sync-page-levels', 'index', 'Sincronizar Página e Nível de Acesso', 0, 1, 7, 1, NOW()),
+    ('Users', 'index', 'users', 'index', 'Usuários', 0,1, 2, 1, NOW()),
+    ('ViewUser', 'index', 'view-user', 'index', 'Visualizar Usuário', 0, 1, 2, 1, NOW()),
+    ('AddUser', 'index', 'add-user', 'index', 'Adicionar Usuário', 0, 1, 3, 1, NOW()),
+    ('EditUser', 'index', 'edit-user', 'index', 'Editar Usuário', 0, 1, 4, 1, NOW()),
+    ('DeleteUser', 'index', 'delete-user', 'index', 'Excluir Usuário', 0, 1, 5, 1, NOW()),
+
+-- INSERT INTO `page_levels`
+--     (permission, order_level_page, access_level_id, page_id, created_at)
+-- VALUES
+--     (1, 1, 1, 1, NOW());
 
 -- Example of email configuration. Select the email configuration that you want to use and insert the data in the table config_emails
 -- INSERT INTO `config_emails` (`title`, `name`, `email`, `host`, `username`, `password`, `smtp_secure`, `port`, `created_at`)
