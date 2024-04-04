@@ -11,6 +11,7 @@ class AddPage
     private bool $result = false;
     private array $data = [];
     private object $conn;
+    private const FALSE = 0;
 
     public function getResult(): bool
     {
@@ -34,13 +35,13 @@ class AddPage
         $insert = "INSERT INTO `pages` 
                     (
                       `controller`, `method`, `controller_in_the_main`,
-                      `method_in_the_main`, `name_page`, `public`, `icon`, `obs`, 
+                      `method_in_the_main`, `name_page`, `public`, `enable_in_sidebar`, `icon`, `obs`, 
                       `page_status_id`, `page_group_id`, `page_module_id`, `created_at`
                     )
                    VALUES 
                     (
                         :controller, :method, :controller_in_the_main,
-                        :method_in_the_main, :name_page, :public, :icon, :obs, 
+                        :method_in_the_main, :name_page, :public, :enable_in_sidebar, :icon, :obs, 
                         :page_status_id, :page_group_id, :page_module_id, NOW()
                     )";
         
@@ -61,6 +62,7 @@ class AddPage
         $stmt->bindValue(':method_in_the_main', $methodMain, \PDO::PARAM_STR);
         $stmt->bindValue(':name_page', ConvertToCapitularString::format($formData['name']), \PDO::PARAM_STR);
         $stmt->bindValue(':public', intval($formData['public']), \PDO::PARAM_INT);
+        $stmt->bindValue(':enable_in_sidebar', self::FALSE, \PDO::PARAM_STR);
         $stmt->bindValue(':icon', $icon, \PDO::PARAM_STR);
         $stmt->bindValue(':obs', $obs, \PDO::PARAM_STR);
         $stmt->bindValue(':page_status_id', intval($formData['status']), \PDO::PARAM_INT);

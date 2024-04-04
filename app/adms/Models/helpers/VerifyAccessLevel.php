@@ -15,7 +15,7 @@ class verifyAccessLevel
      * @param int $accessLevelId
      * @return bool
      */
-    public static function verifyAccessLevel(int $accessLevelId): bool
+    public static function verifyAccessLevel(int $accessLevelId): array
     {
         $sql = "SELECT `id`, `access_level`
                 FROM `access_levels`
@@ -30,9 +30,9 @@ class verifyAccessLevel
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            return true;
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
-        return false;
+        return [];
     }
 }

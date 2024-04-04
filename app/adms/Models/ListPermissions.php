@@ -12,6 +12,7 @@ class ListPermissions
     private bool $result = false;
     private object $conn;
     private ?string $dataPagination;
+    private string $accessLevel;
     private const LIMIT = 10;
 
     public function getResult(): bool
@@ -24,10 +25,16 @@ class ListPermissions
         return $this->dataPagination;
     }
 
+    public function getAccessLevel(): string
+    {
+        return $this->accessLevel;
+    }
+
     public function listPermissions(?int $accessLevelId = null, ?int $page = null): ?array
     {
-        $verifiedTrue = VerifyAccessLevel::verifyAccessLevel($accessLevelId);
-        if ($verifiedTrue){
+        $verifiedHasPermission = VerifyAccessLevel::verifyAccessLevel($accessLevelId);
+        
+        if (! empty($verifiedHasPermission)){
             $pagination = new Pagination(URL . 'permissions/index', '?level=' . $accessLevelId);
             $pagination->condiction($page, self::LIMIT);
             $countConfEmails = $this->countPermissions($accessLevelId);
@@ -36,6 +43,7 @@ class ListPermissions
             $this->dataPagination = $resultPage;
             
             $this->conn = Connection::connect();
+            $this->accessLevel = $verifiedHasPermission['access_level'];
             return $this->queryPermissions($pagination, $accessLevelId);
         }
         
@@ -51,17 +59,28 @@ class ListPermissions
                                 WHEN 1 THEN 'Liberado'
                                 ELSE 'Bloqueado'
                             END AS permission,
+                            CASE p.enable_in_sidebar
+                                WHEN 1 THEN 'Sim'
+                                ELSE 'Não'
+                            END AS sidebar,
                             pl.order_level_page, 
                             pl.page_id,
                             p.name_page, 
-                            pl.access_level_id,
-                            al.access_level
+                            pl.access_level_id
                         FROM `page_levels` AS pl
                             INNER JOIN `pages` AS p
                                 ON pl.page_id = p.id
                             INNER JOIN `access_levels` AS al
                                 ON pl.access_level_id = al.id
                         WHERE pl.access_level_id = :access_level_id
+                        GROUP BY 
+                            pl.id,
+                            pl.permission,
+                            p.enable_in_sidebar,
+                            pl.order_level_page,
+                            pl.page_id,
+                            p.name_page,
+                            pl.access_level_id
                         ORDER BY pl.order_level_page ASC
                         LIMIT :limit OFFSET :offset";
 

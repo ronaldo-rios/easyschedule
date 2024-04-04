@@ -1,6 +1,10 @@
 <?php
 
-echo "<h2>Permissões</h2>";
+isset($this->data['access_level']) && !empty($this->data['access_level'])
+    ? $accessLevel = "<h2>Permissões do {$this->data['access_level']}</h2>"
+    : $accessLevel = "<h2>Permissões</h2>";
+    
+echo $accessLevel; 
 
 if (isset($_SESSION['msg'])) {
     echo $_SESSION['msg'];
@@ -20,7 +24,7 @@ foreach($this->data['permissions'] as $permission) {
             <span style='color: red;'>{$permission['permission']}
         </span></a>";
     }
-    echo "<span>{$permission['name_page']} - {$permission['order_level_page']} - {$statusPermission} </span><br>";
+    echo "<span>{$permission['name_page']} - {$permission['order_level_page']} - {$statusPermission} - {$permission['sidebar']}</span><br>";
     echo "<a href='". URL . "view-permission/index/{$permission['id']}'>Visualizar</a><br>";
     echo "<a href='". URL . "edit-permission/index/{$permission['id']}'>Editar</a><br><br>";
 }
