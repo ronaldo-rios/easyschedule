@@ -3,6 +3,7 @@
 namespace App\adms\Controllers;
 
 use Core\ConfigView;
+use App\adms\Models\helpers\SidebarMenuPermissions;
 use App\adms\Models\ListPageGroups as ModelsListPageGroups;
 
 class PageGroups
@@ -21,7 +22,7 @@ class PageGroups
         } else {
             $this->data['page_groups'] = [];
         }
-
+        $this->data['sidebar_menu'] = SidebarMenuPermissions::checkPermissionsSidebarMenus();
         $this->viewPageGroups();
     }
 

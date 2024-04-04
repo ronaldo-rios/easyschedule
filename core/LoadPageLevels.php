@@ -72,7 +72,6 @@ class LoadPageLevels
     private static function loadMethod(): void
     {
         $classLoad = new self::$classLoad();
-
         if (method_exists($classLoad, self::$urlMethod)) {
             $classLoad->{self::$urlMethod}(self::$urlParameter);
         } 
@@ -107,6 +106,11 @@ class LoadPageLevels
         }
     }
 
+    /**
+     * Check if the user has access to the requested page. If the user has access, the method is loaded, 
+     * else the user is redirected to the error page:
+     * @return void
+     */
     private static function searchIfUserHasAccessToPage(): void
     {
         $sql = "SELECT `id`, `permission` 
@@ -121,9 +125,9 @@ class LoadPageLevels
         $stmt->bindValue(':access_level_id', (int) $_SESSION['access_level'], \PDO::PARAM_INT);
         $stmt->bindValue(':permission', Permission::HAVE_PERMISSION->value, \PDO::PARAM_INT);
         $stmt->execute();
-        $resultPageLevel = (array) $stmt->fetch(\PDO::FETCH_ASSOC);
+        $resultPageLevel = (array) $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        if ($resultPageLevel) {
+        if (! empty($resultPageLevel)) {
             self::$classLoad = "\\App\\". self::$pageResult['type'] ."\\Controllers\\" . self::$urlController;
             self::loadMethod();
         }

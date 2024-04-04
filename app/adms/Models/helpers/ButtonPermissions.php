@@ -10,13 +10,19 @@ class ButtonPermissions
 {
     private static ?array $result = [];
 
-    public static function validateButtonPermission(?array $data): ?array
+    /**
+     * Validate button permission. If the user has permission to access the page, the button will be displayed.
+     * Else the button will not visible.
+     * @param array|null $data
+     * @return array|null
+     */
+    public static function checkPermissionsButtons(?array $data): ?array
     {
         foreach($data as $key => $button) {
             $resultButtonPermissions = self::query(
                 (string) $button['menu_controller'], (string) $button['menu_method']
             );
-
+          
             !empty($resultButtonPermissions) 
                 ? self::$result[$key] = true 
                 : self::$result[$key] = false;
@@ -44,7 +50,7 @@ class ButtonPermissions
         $stmt->bindValue(':have_permission', Permission::HAVE_PERMISSION->value, PDO::PARAM_INT);
         $stmt->bindValue(':access_level_id', (int) $_SESSION['access_level'], PDO::PARAM_INT);
         $stmt->execute();
-        $queryResult = (array) $stmt->fetch(PDO::FETCH_ASSOC);
+        $queryResult = (array) $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $queryResult;
     }
 }

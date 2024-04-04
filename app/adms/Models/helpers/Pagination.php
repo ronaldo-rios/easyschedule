@@ -53,7 +53,7 @@ class Pagination
     private function layoutPagination(): void
     {
         $this->result = "<ul>";
-        $this->result .= "<li><a href='{$this->link}'>Primeira</a></li>";
+        $this->result .= "<li><a href='{$this->link}/1{$this->var}'>Primeira</a></li>";
 
         for ($beforePage = $this->page - self::NUM_MAX_LINKS_VISIBLE; $beforePage <= $this->page - 1; $beforePage++) {
             if ($beforePage >= 1) {

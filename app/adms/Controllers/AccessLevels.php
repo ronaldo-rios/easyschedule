@@ -3,6 +3,7 @@
 namespace App\adms\Controllers;
 
 use Core\ConfigView;
+use App\adms\Models\helpers\SidebarMenuPermissions;
 use App\adms\Models\AccessLevels as ModelsAccessLevels;
 
 class AccessLevels
@@ -18,6 +19,7 @@ class AccessLevels
             ? $this->data['accesslevels'] = $finalResult
             : $this->data['accesslevels'] = [];
 
+        $this->data['sidebar_menu'] = SidebarMenuPermissions::checkPermissionsSidebarMenus();
         $view = new ConfigView("adms/Views/accesslevel/accessLevels", $this->data);
         $view->loadView();
     }

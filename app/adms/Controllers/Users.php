@@ -2,9 +2,10 @@
 
 namespace App\adms\Controllers;
 
-use App\adms\Models\helpers\ButtonPermissions;
 use Core\ConfigView;
 use App\adms\Models\ListUsers;
+use App\adms\Models\helpers\ButtonPermissions;
+use App\adms\Models\helpers\SidebarMenuPermissions;
 
 class Users
 {
@@ -29,8 +30,9 @@ class Users
             'edit_user' => ['menu_controller' => 'edit-user', 'menu_method' => 'index'],
             'delete_user' => ['menu_controller' => 'delete-user', 'menu_method' => 'index']
         ];
-
-        $this->data['buttonpermissions'] = ButtonPermissions::validateButtonPermission($buttons);
+       
+        $this->data['button_permissions'] = ButtonPermissions::checkPermissionsButtons($buttons);
+        $this->data['sidebar_menu'] = SidebarMenuPermissions::checkPermissionsSidebarMenus();
 
         $view = new ConfigView("adms/Views/users/users", $this->data);
         $view->loadView();

@@ -1,5 +1,5 @@
 <?php
-echo $this->data;
+echo $this->data['welcome'];
 echo "<br><br>Dashboard!<br><br>";
 
 

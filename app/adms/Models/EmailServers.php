@@ -6,7 +6,7 @@ use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\Pagination;
 use PDO;
 
-class ViewEmailServers
+class EmailServers
 {
     private object $conn; 
     private bool $result = false;
@@ -25,7 +25,7 @@ class ViewEmailServers
 
     public function getEmails(int $page): array
     {
-        $pagination = new Pagination(URL . 'view-email-servers/index');
+        $pagination = new Pagination(URL . 'email-servers/index');
         $pagination->condiction($page, self::LIMIT);
         $countConfEmails = $this->contEmailServers();
         $pagination->paginate($countConfEmails);

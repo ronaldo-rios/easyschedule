@@ -8,7 +8,7 @@ if (isset($_SESSION['msg'])) {
 }
 
 foreach($this->data['permissions'] as $permission) {
-    if ($permission['permission'] == 'Liberado') {
+    if ($permission['permission'] === 'Liberado') {
         $statusPermission = 
         "<a href='" . URL . "edit-permission/index/{$permission['id']}&level={$permission['access_level_id']}&page={$this->data['page']}'>
             <span style='color: green;'>{$permission['permission']}

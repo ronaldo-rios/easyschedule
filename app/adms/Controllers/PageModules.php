@@ -3,6 +3,7 @@
 namespace App\adms\Controllers;
 
 use Core\ConfigView;
+use App\adms\Models\helpers\SidebarMenuPermissions;
 use App\adms\Models\ListPageModules as ModelsListPageModules;
 
 class PageModules
@@ -22,6 +23,7 @@ class PageModules
             $this->data['modules'] = [];
         }
 
+        $this->data['sidebar_menu'] = SidebarMenuPermissions::checkPermissionsSidebarMenus();
         $this->viewPageModules();
     }
 

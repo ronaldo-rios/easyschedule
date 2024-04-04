@@ -4,6 +4,7 @@ namespace App\adms\Controllers;
 
 use Core\ConfigView;
 use App\adms\Models\ListPages;
+use App\adms\Models\helpers\SidebarMenuPermissions;
 
 class Pages
 {
@@ -22,6 +23,7 @@ class Pages
             $this->data['pages'] = [];
         }
 
+        $this->data['sidebar_menu'] = SidebarMenuPermissions::checkPermissionsSidebarMenus();
         $this->viewPages();
     }
 
