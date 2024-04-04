@@ -9,7 +9,8 @@ class EditPermission
 {
     private object $conn;
     private bool $result = false;
-    
+    private const PUBLIC_PAGE = 1;
+
     public function edit(int $id): void
     {
         $this->conn = Connection::connect();
@@ -36,13 +37,33 @@ class EditPermission
                   FROM `page_levels` AS pl
                     INNER JOIN `access_levels` AS level
                         ON pl.access_level_id = level.id
+                    LEFT JOIN `pages` AS pg
+                        ON pl.page_id = pg.id
                   WHERE pl.id = :id
                     AND level.order_level > :order_level
+                    AND 
+                            (
+                                (
+                                    (
+                                        SELECT pagelevels.permission
+                                            FROM `page_levels` AS pagelevels
+                                            WHERE pagelevels.page_id = pl.page_id
+                                            AND pagelevels.access_level_id = :access_level_session
+                                    ) = :have_permission
+                                )
+                                OR 
+                                (
+                                    pg.public = :public_page
+                                )
+                            )
                   LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->bindValue(':order_level', (int) $_SESSION['order_level'], \PDO::PARAM_INT);
+        $stmt->bindValue(':access_level_session', (int) $_SESSION['access_level'], \PDO::PARAM_INT);
+        $stmt->bindValue(':have_permission', Permission::HAVE_PERMISSION->value, \PDO::PARAM_INT);
+        $stmt->bindValue(':public_page', self::PUBLIC_PAGE, \PDO::PARAM_INT);
         $stmt->execute();
         $infoPageLevels = (array) $stmt->fetch(\PDO::FETCH_ASSOC);
 

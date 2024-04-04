@@ -2,6 +2,7 @@
 
 namespace App\adms\Models;
 
+use App\adms\Enum\Permission;
 use PDO;
 use App\adms\Models\helpers\Connection;
 use App\adms\Models\helpers\Pagination;
@@ -73,6 +74,22 @@ class ListPermissions
                             INNER JOIN `access_levels` AS al
                                 ON pl.access_level_id = al.id
                         WHERE pl.access_level_id = :access_level_id
+                            AND al.order_level >= :order_level
+                            AND 
+                            (
+                                (
+                                    (
+                                        SELECT pagelevels.permission
+                                            FROM `page_levels` AS pagelevels
+                                            WHERE pagelevels.page_id = pl.page_id
+                                            AND pagelevels.access_level_id = :access_level_session
+                                    ) = :have_permission
+                                )
+                                OR 
+                                (
+                                    p.public = 1
+                                )
+                            )
                         GROUP BY 
                             pl.id,
                             pl.permission,
@@ -86,6 +103,9 @@ class ListPermissions
 
         $stmt = $this->conn->prepare($permissions);
         $stmt->bindValue(':access_level_id', $accessLevelId, PDO::PARAM_INT);
+        $stmt->bindValue(':order_level', $_SESSION['access_level'], PDO::PARAM_INT);
+        $stmt->bindValue(':access_level_session', $_SESSION['access_level'], PDO::PARAM_INT);
+        $stmt->bindValue(':have_permission', Permission::HAVE_PERMISSION->value, PDO::PARAM_INT);
         $stmt->bindValue(':limit', self::LIMIT, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $pagination->getOffset(), PDO::PARAM_INT);
         $stmt->execute();
@@ -104,13 +124,32 @@ class ListPermissions
 
     private function countPermissions(int $accessLevel): int
     {
-        $sql = "SELECT COUNT(id) AS num_result
-                FROM `page_levels`
-                WHERE access_level_id = :access_level_id";
+        $sql = "SELECT COUNT(pl.id) AS num_result
+                    FROM `page_levels` AS pl
+                    INNER JOIN `pages` AS p
+                        ON pl.page_id = p.id
+                WHERE pl.access_level_id = :access_level_id
+                    AND 
+                    (
+                        (
+                            (
+                                SELECT pagelevels.permission
+                                    FROM `page_levels` AS pagelevels
+                                    WHERE pagelevels.page_id = pl.page_id
+                                    AND pagelevels.access_level_id = :access_level_session
+                            ) = :have_permission
+                        )
+                        OR 
+                        (
+                            p.public = 1
+                        )
+                    )";
 
         $this->conn = Connection::connect();
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':access_level_id', $accessLevel, PDO::PARAM_INT);
+        $stmt->bindValue(':access_level_session', $_SESSION['access_level'], PDO::PARAM_INT);
+        $stmt->bindValue(':have_permission', Permission::HAVE_PERMISSION->value, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
